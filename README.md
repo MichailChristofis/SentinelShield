@@ -1,2 +1,2 @@
 # SentinelShield
-Creation of a console application ticketing system for Cinco
+The assignment is to develop a console-based Java program for an IT Service Desk ticketing system. ​ The program should allow staff members to create accounts, submit IT issues with severity levels, assign tickets to technicians, allow technicians to change severity and status of tickets, and archive closed tickets. ​ The assignment will be completed in three sprints, with various artifacts to be submitted at the end of each sprint. ​ The marks for the assignment are allocated to different components such as the product backlog, sprint backlog, burndown charts, sprint planning documents, sprint review documents, sprint retrospective documents, and Java code. 
