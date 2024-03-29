@@ -22,7 +22,7 @@ public class SentinelShield {
     }
 
     private String getUserInput(String prompt, Predicate<String> validationFunc, String invalidPrompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         String input = console.nextLine();
         while (!validationFunc.test(input)) {
             System.out.println(invalidPrompt);
@@ -64,7 +64,7 @@ public class SentinelShield {
                 "Enter a name.\nLast Name: ");
         String phone = getUserInput(
                 "Phone number: ",
-                s -> s.matches("^\\+?\\d{2,4} ?\\d{2,4} ?\\d{2,4}? ?\\d{2,4}?$"),
+                s -> s.matches("^\\+?\\d{2,4} ?\\d{2,4} ?(\\d{2,4}) ?(\\d{2,4})?$"),
                 "Invalid phone number.\nPhone number: ");
         String password = getUserInput(
                 "Password: ",
@@ -105,7 +105,8 @@ public class SentinelShield {
 
     // This method starts the SentinelShield program and runs the user menu.
     public void run() {
-
+        signupScreen();
+        // TODO - this basically needs to follow Paul's flowchart diagram.
     }
 
     public static void main(String[] args) {
