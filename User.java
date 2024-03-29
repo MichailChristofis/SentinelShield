@@ -1,9 +1,20 @@
 //The user class is used to store a user's details, including
 //their email, first name, last name, phone number, password
 //and whether or not they are a technician.
+
+import java.util.ArrayList;
+
 public class User {
     private String email, firstName, lastName, phoneNumber, password;
     private boolean isTechnician;
+
+    // This is a reference to the user that created this ticket so it can be
+    // accessed without searching through the list of all staff.
+    private User createdBy;
+
+    // This will be the 'created' tickets of a staff member OR the 'assigned'
+    // tickets of a technician, as these two categories do not overlap.
+    private ArrayList<Ticket> tickets = new ArrayList<>();
 
     // The User() method, is the constructor for the User class.
     public User(String email, String firstName, String lastName, String phoneNumber, String password,
