@@ -8,10 +8,6 @@ public class User {
     private String email, firstName, lastName, phoneNumber, password;
     private boolean isTechnician;
 
-    // This is a reference to the user that created this ticket so it can be
-    // accessed without searching through the list of all staff.
-    private User createdBy;
-
     // This will be the 'created' tickets of a staff member OR the 'assigned'
     // tickets of a technician, as these two categories do not overlap.
     private ArrayList<Ticket> tickets = new ArrayList<>();

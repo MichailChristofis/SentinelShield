@@ -21,6 +21,10 @@ public class Ticket {
     private TicketStatus ticketStatus;
     private LocalDate dateCompleted;
 
+    // This is a reference to the user that created this ticket so it can be
+    // accessed without searching through the list of all staff.
+    private User createdBy;
+
     // The Ticket() method is a constructor for the Ticket class.
     public Ticket(String description, Severity severity, TicketStatus ticketStatus, LocalDate dateCompleted) {
         this.description = description;

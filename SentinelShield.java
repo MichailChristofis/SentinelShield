@@ -9,14 +9,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Predicate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SentinelShield {
 
     private Scanner console = new Scanner(System.in);
-    private List<User> users = new ArrayList<>();
+    private Map<String, User> users = new HashMap<>();
     private ServiceDesk serviceDesk;
+    private User currentUser;
 
-    public SentinelShield(List<User> users, ServiceDesk serviceDesk) {
+    public SentinelShield(Map<String, User> users, ServiceDesk serviceDesk) {
         this.users = users;
         this.serviceDesk = serviceDesk;
     }
@@ -35,10 +38,46 @@ public class SentinelShield {
         return getUserInput(prompt, s -> true, "");
     }
 
+    // Takes user input and attempts to authenticate them from the map of users
+    // Returns a boolean, and updates private variable currentUser if login successful.
+    private boolean validateLogin(String email, String password){
+        // Login validation is false until checks pass
+        boolean isValid = false;
+        // Find the user email
+        if (users.containsKey(email)){
+            // Store the user object for easy access in the rest of the block
+            User user = users.get(email);
+            // Check if the passwords match
+            if (user.getPassword().equals(password)){
+                // Login is valid
+                isValid = true;
+                // Store the use for the session
+                currentUser = user;
+            }
+        }
+        return isValid;
+    }
+
     // The loginScreen() method, handles the user interface
     // and communication with the user, for the login screen.
     private void loginScreen() {
-
+        String email = "";
+        String password = "";
+        // Loop until the user logs in successfully
+        do {
+            email = getUserInput("Please enter your email: ");
+            password = getUserInput("Please enter your password: ");
+        } while (!validateLogin(email, password));
+        // Print login success message based on whether or not user is technician
+        // TODO Update me when there are seperate dahsboard functions
+        if (currentUser.getIsTechnician()){
+            System.out.println("Technician Login successful!");
+            viewTicketsScreen();
+        } else{
+            System.out.println("Staff Login successful!");
+            viewTicketsScreen();
+        }
+        
     }
 
     // The forgotPasswordScreen() method, handles the user interface
@@ -51,23 +90,24 @@ public class SentinelShield {
     // and communication with the user, for the signup screen.
     private void signupScreen() {
         String email = getUserInput(
-                "Email: ",
+                "Please enter your Email: ",
                 s -> s.matches("^([a-zA-Z0-9]+\\.?)*[a-zA-Z0-9]@([a-zA-Z0-9]+\\.?)+[a-zA-Z0-9]$"),
                 "Invalid email address.\nEmail: ");
+        // TODO: Decide if we need to make sure the email doesn't already exist and implement if so
         String firstName = getUserInput(
-                "First Name: ",
+                "Please enter your First Name: ",
                 s -> !s.isEmpty(),
                 "Enter a name.\nFirst Name: ");
         String lastName = getUserInput(
-                "Last Name: ",
+                "Please enter your Last Name: ",
                 s -> !s.isEmpty(),
                 "Enter a name.\nLast Name: ");
         String phone = getUserInput(
-                "Phone number: ",
+                "Please enter your Phone number: ",
                 s -> s.matches("^\\+?\\d{2,4} ?\\d{2,4} ?(\\d{2,4}) ?(\\d{2,4})?$"),
                 "Invalid phone number.\nPhone number: ");
         String password = getUserInput(
-                "Password: ",
+                "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
                 s -> s.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$"),
                 "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit.");
         boolean confirmation = getUserInput(
@@ -75,38 +115,44 @@ public class SentinelShield {
                 s -> s.toLowerCase().equals("y") || s.toLowerCase().equals("n"), "Please enter 'Y' or 'N': ")
                 .toLowerCase().equals("y");
         if (confirmation) {
-            users.add(new User(email, firstName, lastName, phone, password, false));
+            users.put(email, new User(email, firstName, lastName, phone, password, false));
         }
     }
 
     // The signupScreen() method, handles the user interface
     // and communication with the user, for the signup screen.
     private void viewTicketsScreen() {
-
+        // TODO
+        getUserInput("Welcome, " + currentUser.getFirstName() + ". The rest of this program doesn't exist yet, please press any key to exit.");
     }
 
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
-
+        // TODO
     }
 
     // The completeTicketScreen() method, handles the user interface
     // and communication with the user, for the complete ticket screen.
     private void completeTicketScreen() {
-
+        // TODO
     }
 
     // The checkForArchivedTickets() method, ....
     // Joshua all yours mate, not sure what you wanted here
     private void checkForArchivedTickets() {
-
+        // TODO
     }
 
     // This method starts the SentinelShield program and runs the user menu.
     public void run() {
-        signupScreen();
+        // TEST CODE, REMOVE BEFORE SUBMISSION
+        // users.put("test@test.com", new User("test@test.com", "test", "test", "0412345678", "Test123456789123456789", false));
+        
         // TODO - this basically needs to follow Paul's flowchart diagram.
+        // TODO - Potentially add some kind of main menu?
+        signupScreen();
+        loginScreen();
     }
 
     public static void main(String[] args) {
@@ -122,11 +168,19 @@ public class SentinelShield {
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
 
-        List<User> users = new ArrayList<>(Arrays.asList(techniciansLevel1));
-        users.addAll(Arrays.asList(techniciansLevel2));
 
+        // Add the technicians to the user map
+        Map<String, User> users = new HashMap<>();
+        for (User technician : techniciansLevel1) {
+            users.put(technician.getEmail(), technician);
+        }
+        for (User technician : techniciansLevel2) {
+            users.put(technician.getEmail(), technician);
+        }
+
+        // Initialise SentinelShield
         SentinelShield system = new SentinelShield(users, new ServiceDesk(techniciansLevel1, techniciansLevel2));
-
+        // Run the program
         system.run();
     }
 }
