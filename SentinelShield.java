@@ -68,7 +68,7 @@ public class SentinelShield {
                 "Invalid phone number.\nPhone number: ");
         String password = getUserInput(
                 "Password: ",
-                s -> s.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z1-9]{20,}$"),
+                s -> s.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$"),
                 "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit.");
         boolean confirmation = getUserInput(
                 "Confirm adding a new user with the information you just added (Y/N): ",
