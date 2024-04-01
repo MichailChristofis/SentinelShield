@@ -67,6 +67,9 @@ public class SentinelShield {
         do {
             email = getUserInput("Please enter your email: ");
             password = getUserInput("Please enter your password: ");
+            if(!validateLogin(email, password)) {
+            	System.out.println("Invalid credentials");
+            }
         } while (!validateLogin(email, password));
         // Print login success message based on whether or not user is technician
         // TODO Update me when there are seperate dahsboard functions
@@ -151,8 +154,31 @@ public class SentinelShield {
         
         // TODO - this basically needs to follow Paul's flowchart diagram.
         // TODO - Potentially add some kind of main menu?
-        signupScreen();
-        loginScreen();
+    	boolean conloop=true;
+    	while(conloop) {
+	    	String input="";
+	    	do {
+				System.out.println("Please select if you would like to sign up, or login:");
+				System.out.println("(1) Signup");
+				System.out.println("(2) Login");
+				System.out.println("(3) Exit");
+			    input = console.nextLine();
+			    if(input.compareTo("1")!=0 && input.compareTo("2")!=0 && input.compareTo("3")!=0) {
+			    	System.out.println("Invalid option");
+			    }
+	    	}while(input.compareTo("1")!=0 && input.compareTo("2")!=0 && input.compareTo("3")!=0);
+	    	
+	    	if(input.compareTo("1")==0) {
+	    		signupScreen();
+	    	}
+	    	else if(input.compareTo("2")==0) {
+	    		loginScreen();
+	    	}
+	    	else {
+	    		System.out.println("Goodbye");
+	    		conloop=false;
+	    	}
+    	}
     }
 
     public static void main(String[] args) {
