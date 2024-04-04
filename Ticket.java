@@ -14,8 +14,9 @@ public class Ticket {
         Open,
         CompletedResolved,
         CompletedUnresolved,
-        Archived
     }
+
+    bool Archived = false;
 
     private String description;
     private Severity severity;
