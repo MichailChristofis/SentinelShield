@@ -39,16 +39,17 @@ public class SentinelShield {
     }
 
     // Takes user input and attempts to authenticate them from the map of users
-    // Returns a boolean, and updates private variable currentUser if login successful.
-    private boolean validateLogin(String email, String password){
+    // Returns a boolean, and updates private variable currentUser if login
+    // successful.
+    private boolean validateLogin(String email, String password) {
         // Login validation is false until checks pass
         boolean isValid = false;
         // Find the user email
-        if (users.containsKey(email)){
+        if (users.containsKey(email)) {
             // Store the user object for easy access in the rest of the block
             User user = users.get(email);
             // Check if the passwords match
-            if (user.getPassword().equals(password)){
+            if (user.getPassword().equals(password)) {
                 // Login is valid
                 isValid = true;
                 // Store the use for the session
@@ -67,20 +68,20 @@ public class SentinelShield {
         do {
             email = getUserInput("Please enter your email: ");
             password = getUserInput("Please enter your password: ");
-            if(!validateLogin(email, password)) {
-            	System.out.println("Invalid credentials");
+            if (!validateLogin(email, password)) {
+                System.out.println("Invalid credentials");
             }
         } while (!validateLogin(email, password));
         // Print login success message based on whether or not user is technician
         // TODO Update me when there are separate dashboard functions
-        if (currentUser.getIsTechnician()){
+        if (currentUser.getIsTechnician()) {
             System.out.println("Technician Login successful!");
             viewTicketsScreen();
-        } else{
+        } else {
             System.out.println("Staff Login successful!");
             viewTicketsScreen();
         }
-        
+
     }
 
     // The forgotPasswordScreen() method, handles the user interface
@@ -96,7 +97,8 @@ public class SentinelShield {
                 "Please enter your Email: ",
                 s -> s.matches("^([a-zA-Z0-9]+\\.?)*[a-zA-Z0-9]@([a-zA-Z0-9]+\\.?)+[a-zA-Z0-9]$"),
                 "Invalid email address.\nEmail: ");
-        // TODO: Decide if we need to make sure the email doesn't already exist and implement if so
+        // TODO: Decide if we need to make sure the email doesn't already exist and
+        // implement if so
         String firstName = getUserInput(
                 "Please enter your First Name: ",
                 s -> !s.isEmpty(),
@@ -126,7 +128,8 @@ public class SentinelShield {
     // and communication with the user, for the signup screen.
     private void viewTicketsScreen() {
         // TODO
-        getUserInput("Welcome, " + currentUser.getFirstName() + ". The rest of this program doesn't exist yet, please press any key to exit.");
+        getUserInput("Welcome, " + currentUser.getFirstName()
+                + ". The rest of this program doesn't exist yet, please press any key to exit.");
     }
 
     // The createTicketScreen() method, handles the user interface
@@ -150,35 +153,34 @@ public class SentinelShield {
     // This method starts the SentinelShield program and runs the user menu.
     public void run() {
         // TEST CODE, REMOVE BEFORE SUBMISSION
-        // users.put("test@test.com", new User("test@test.com", "test", "test", "0412345678", "Test123456789123456789", false));
-        
+        // users.put("test@test.com", new User("test@test.com", "test", "test",
+        // "0412345678", "Test123456789123456789", false));
+
         // TODO - this basically needs to follow Paul's flowchart diagram.
         // TODO - Potentially add some kind of main menu?
-    	boolean conloop=true;
-    	while(conloop) {
-	    	String input="";
-	    	do {
-				System.out.println("Please select if you would like to sign up, or login:");
-				System.out.println("(1) Signup");
-				System.out.println("(2) Login");
-				System.out.println("(3) Exit");
-			    input = console.nextLine();
-			    if(input.compareTo("1")!=0 && input.compareTo("2")!=0 && input.compareTo("3")!=0) {
-			    	System.out.println("Invalid option");
-			    }
-	    	}while(input.compareTo("1")!=0 && input.compareTo("2")!=0 && input.compareTo("3")!=0);
-	    	
-	    	if(input.compareTo("1")==0) {
-	    		signupScreen();
-	    	}
-	    	else if(input.compareTo("2")==0) {
-	    		loginScreen();
-	    	}
-	    	else {
-	    		System.out.println("Goodbye");
-	    		conloop=false;
-	    	}
-    	}
+        boolean conloop = true;
+        while (conloop) {
+            String input = "";
+            do {
+                System.out.println("Please select if you would like to sign up, or login:");
+                System.out.println("(1) Signup");
+                System.out.println("(2) Login");
+                System.out.println("(3) Exit");
+                input = console.nextLine();
+                if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0) {
+                    System.out.println("Invalid option");
+                }
+            } while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0);
+
+            if (input.compareTo("1") == 0) {
+                signupScreen();
+            } else if (input.compareTo("2") == 0) {
+                loginScreen();
+            } else {
+                System.out.println("Goodbye");
+                conloop = false;
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -193,7 +195,6 @@ public class SentinelShield {
         techniciansLevel2[0] = new User("louistomlison@gmail.com", "Louis", "Tomlison", "(02) 1234 1234", "louislouis",
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
-
 
         // Add the technicians to the user map
         Map<String, User> users = new HashMap<>();
