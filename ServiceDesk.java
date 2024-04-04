@@ -1,7 +1,8 @@
-//The ServiceDesk class is dedicated to handling tickets
-//and assigning them to the appropriate technician, using
-//as its criteria both severity, and number of tickets assigned
-//to each technician
+// The ServiceDesk class is dedicated to handling tickets
+// and assigning them to the appropriate technician, using
+// as its criteria both severity, and number of tickets assigned
+// to each technician
+
 public class ServiceDesk {
     private User[] techniciansLevel1, techniciansLevel2;
 
