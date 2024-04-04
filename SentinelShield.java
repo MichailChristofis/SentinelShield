@@ -1,8 +1,8 @@
-//SentinelShield is the main class of the project.
-//It handles all communication with the user, and
-//uses the data garnered from that communication
-//appropriately, sending it to the relevant department
-//and people
+// SentinelShield is the main class of the project.
+// It handles all communication with the user, and
+// uses the data garnered from that communication
+// appropriately, sending it to the relevant department
+// and people.
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,7 +72,7 @@ public class SentinelShield {
             }
         } while (!validateLogin(email, password));
         // Print login success message based on whether or not user is technician
-        // TODO Update me when there are seperate dahsboard functions
+        // TODO Update me when there are separate dashboard functions
         if (currentUser.getIsTechnician()){
             System.out.println("Technician Login successful!");
             viewTicketsScreen();

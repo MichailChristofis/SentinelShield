@@ -1,7 +1,8 @@
+// The Ticket class is used to store a ticket's severity,
+// status, description, and the date of its completion.
+
 import java.time.LocalDate;
 
-//The Ticket class is used to store a ticket's severity,
-//status, description, and the date of its completion.
 public class Ticket {
     enum Severity {
         Low,

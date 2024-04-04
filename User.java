@@ -1,6 +1,6 @@
-//The user class is used to store a user's details, including
-//their email, first name, last name, phone number, password
-//and whether or not they are a technician.
+// The user class is used to store a user's details, including
+// their email, first name, last name, phone number, password
+// and whether or not they are a technician.
 
 import java.util.ArrayList;
 
