@@ -18,6 +18,13 @@ public class Ticket {
 
     bool Archived = false;
 
+    public bool getIsArchived() {
+        return this.Archived
+    }
+    public void setIsArchived(Bool isArchived) {
+        this.Archived = isArchived
+    }
+
     private String description;
     private Severity severity;
     private TicketStatus ticketStatus;
