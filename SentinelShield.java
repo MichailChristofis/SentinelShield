@@ -85,7 +85,17 @@ public class SentinelShield {
     // The forgotPasswordScreen() method, handles the user interface
     // and communication with the user, for the forgot password screen.
     private void forgotPasswordScreen() {
-
+        String usernameString = getUserInput("Please enter your email: ");
+        if (users.containsKey(usernameString)) {
+            User user = users.get(usernameString);
+            user.setPassword(getUserInput(
+                "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
+                s -> s.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$"),
+                "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit."));
+            System.out.println("Your password is has been changed.");
+        } else {
+            System.out.println("User not found.");
+        }
     }
 
     // The signupScreen() method, handles the user interface
@@ -136,7 +146,7 @@ public class SentinelShield {
             if (userinputeString.equals("1")){
                 createTicketScreen();
             } else if (userinputeString.equals("2")){
-                // viewTicketsScreen();
+                viewTicketsScreen();
             } else if (userinputeString.equals("3")){
                 conloop = false;
             } else {
@@ -160,7 +170,7 @@ public class SentinelShield {
     // The viewTicketsScreen() method, handles the user interface
     // and communication with the user, for the view tickets screen.
     private void viewTicketsScreen() {
-        
+        // TODO
     }
 
     // The completeTicketScreen() method, handles the user interface
@@ -190,17 +200,20 @@ public class SentinelShield {
                 System.out.println("Please select if you would like to sign up, or login:");
                 System.out.println("(1) Signup");
                 System.out.println("(2) Login");
-                System.out.println("(3) Exit");
+                System.out.println("(3) Forgot Password");
+                System.out.println("(4) Exit");
                 input = console.nextLine();
-                if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0) {
+                if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0 && input.compareTo("4") != 0) {
                     System.out.println("Invalid option, please enter the number of your selection.");
                 }
-            } while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0);
+            } while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0 && input.compareTo("4") != 0);
 
             if (input.compareTo("1") == 0) {
                 signupScreen();
             } else if (input.compareTo("2") == 0) {
                 loginScreen();
+            } else if (input.compareTo("3") == 0) {
+                forgotPasswordScreen();
             } else {
                 System.out.println("Goodbye");
                 conloop = false;
