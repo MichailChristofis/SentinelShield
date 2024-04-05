@@ -75,11 +75,9 @@ public class SentinelShield {
         // Print login success message based on whether or not user is technician
         // TODO Update me when there are separate dashboard functions
         if (currentUser.getIsTechnician()) {
-            System.out.println("Technician Login successful!");
-            viewTicketsScreen();
+            viewTechTicketsScreen();
         } else {
-            System.out.println("Staff Login successful!");
-            viewTicketsScreen();
+            viewStaffTicketsScreen();
         }
 
     }
@@ -126,7 +124,28 @@ public class SentinelShield {
 
     // The signupScreen() method, handles the user interface
     // and communication with the user, for the signup screen.
-    private void viewTicketsScreen() {
+    private void viewStaffTicketsScreen() {
+        boolean conloop = true;
+        String menuString = "Please make a selection from the options below:\n"
+        + "(1) Create a new ticket\n"
+        + "(2) View your tickets\n"
+        + "(3) Exit\n";
+        String userinputeString = "";
+        while (conloop){
+            userinputeString = getUserInput(menuString);
+            if (userinputeString.equals("1")){
+                createTicketScreen();
+            } else if (userinputeString.equals("2")){
+                // viewTicketsScreen();
+            } else if (userinputeString.equals("3")){
+                conloop = false;
+            } else {
+                System.out.println("Invalid option, please enter the number of your selection.");
+            }
+        }
+    }
+
+    private void viewTechTicketsScreen() {
         // TODO
         getUserInput("Welcome, " + currentUser.getFirstName()
                 + ". The rest of this program doesn't exist yet, please press any key to exit.");
@@ -136,6 +155,12 @@ public class SentinelShield {
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
         // TODO
+    }
+
+    // The viewTicketsScreen() method, handles the user interface
+    // and communication with the user, for the view tickets screen.
+    private void viewTicketsScreen() {
+        
     }
 
     // The completeTicketScreen() method, handles the user interface
@@ -153,8 +178,8 @@ public class SentinelShield {
     // This method starts the SentinelShield program and runs the user menu.
     public void run() {
         // TEST CODE, REMOVE BEFORE SUBMISSION
-        // users.put("test@test.com", new User("test@test.com", "test", "test",
-        // "0412345678", "Test123456789123456789", false));
+        users.put("test@test.com", new User("test@test.com", "test", "test",
+        "0412345678", "Test123456789123456789", false));
 
         // TODO - this basically needs to follow Paul's flowchart diagram.
         // TODO - Potentially add some kind of main menu?
@@ -168,7 +193,7 @@ public class SentinelShield {
                 System.out.println("(3) Exit");
                 input = console.nextLine();
                 if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0) {
-                    System.out.println("Invalid option");
+                    System.out.println("Invalid option, please enter the number of your selection.");
                 }
             } while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0);
 

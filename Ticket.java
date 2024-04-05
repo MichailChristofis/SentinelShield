@@ -16,13 +16,13 @@ public class Ticket {
         CompletedUnresolved,
     }
 
-    bool Archived = false;
+    boolean archived = false;
 
-    public bool getIsArchived() {
-        return this.Archived
+    public boolean getIsArchived() {
+        return this.archived;
     }
-    public void setIsArchived(Bool isArchived) {
-        this.Archived = isArchived
+    public void setIsArchived(boolean isArchived) {
+        this.archived = isArchived;
     }
 
     private String description;
