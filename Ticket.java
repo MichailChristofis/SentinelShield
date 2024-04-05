@@ -17,29 +17,22 @@ public class Ticket {
     }
 
     boolean archived = false;
-
-    public boolean getIsArchived() {
-        return this.archived;
-    }
-    public void setIsArchived(boolean isArchived) {
-        this.archived = isArchived;
-    }
-
     private String description;
     private Severity severity;
     private TicketStatus ticketStatus;
     private LocalDate dateCompleted;
 
-    // This is a reference to the user that created this ticket so it can be
+    // This stores the users which created this ticket's email so it can be
     // accessed without searching through the list of all staff.
-    private User createdBy;
+    private String createdBy;
 
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, Severity severity, TicketStatus ticketStatus, LocalDate dateCompleted) {
+    public Ticket(String description, Severity severity, TicketStatus ticketStatus, LocalDate dateCompleted, String creator) {
         this.description = description;
         this.severity = severity;
         this.ticketStatus = ticketStatus;
         this.dateCompleted = dateCompleted;
+        this.createdBy = creator;
     }
 
     // The getDescription() method is a getter method,
@@ -89,4 +82,18 @@ public class Ticket {
     public void setDateCompleted(LocalDate dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
+    
+    // The getIsArchived() method is a getter method,
+    // for the ticket's archived status.
+    public boolean getIsArchived() {
+        return this.archived;
+    }
+
+    // The setIsArchived() method is a setter method,
+    // for the ticket's archived status.
+    public void setIsArchived(boolean isArchived) {
+        this.archived = isArchived;
+    }
+
 }
+
