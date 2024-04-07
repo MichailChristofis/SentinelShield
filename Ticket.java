@@ -83,7 +83,7 @@ public class Ticket {
     public void setDateCompleted(LocalDate dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
-    
+
     // The getIsArchived() method is a getter method,
     // for the ticket's archived status.
     public boolean getIsArchived() {
@@ -97,4 +97,3 @@ public class Ticket {
     }
 
 }
-
