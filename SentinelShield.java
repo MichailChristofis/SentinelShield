@@ -164,7 +164,9 @@ public class SentinelShield {
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
-        // TODO
+        String issue=getUserInput("Please input a description of the IT issue: ");
+        String severity=getUserInput("Please input the severity of the issue: ");
+        Ticket createdTicket=new Ticket(issue, severity, "open", "", "");
     }
 
     // The viewTicketsScreen() method, handles the user interface

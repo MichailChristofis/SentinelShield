@@ -2,6 +2,7 @@
 // status, description, and the date of its completion.
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Ticket {
     enum Severity {
@@ -27,11 +28,11 @@ public class Ticket {
     private String createdBy;
 
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, Severity severity, TicketStatus ticketStatus, LocalDate dateCompleted, String creator) {
+    public Ticket(String description, String severity, String ticketStatus, String dateCompleted, String creator) {
         this.description = description;
-        this.severity = severity;
-        this.ticketStatus = ticketStatus;
-        this.dateCompleted = dateCompleted;
+        this.severity = Severity.valueOf(severity);
+        this.ticketStatus = TicketStatus.valueOf(ticketStatus);
+        this.dateCompleted = LocalDate.parse(dateCompleted, DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
         this.createdBy = creator;
     }
 
