@@ -4,9 +4,6 @@
 // appropriately, sending it to the relevant department
 // and people.
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 import java.util.function.Predicate;
 import java.util.HashMap;
@@ -18,6 +15,8 @@ public class SentinelShield {
     private Map<String, User> users = new HashMap<>();
     private ServiceDesk serviceDesk;
     private User currentUser;
+
+    private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$";
 
     public SentinelShield(Map<String, User> users, ServiceDesk serviceDesk) {
         this.users = users;
@@ -88,10 +87,11 @@ public class SentinelShield {
         String usernameString = getUserInput("Please enter your email: ");
         if (users.containsKey(usernameString)) {
             User user = users.get(usernameString);
-            user.setPassword(getUserInput(
-                "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
-                s -> s.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$"),
-                "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit."));
+            String newPassword = getUserInput(
+                    "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
+                    s -> s.matches(PASSWORD_REGEX) && !user.getPassword().equals(s),
+                    "Choose a different password that has at least 20 characters, and contain at least 1 uppercase, lowercase, and digit.");
+            user.setPassword(newPassword);
             System.out.println("Your password is has been changed.");
         } else {
             System.out.println("User not found.");
@@ -121,7 +121,7 @@ public class SentinelShield {
                 "Invalid phone number.\nPhone number: ");
         String password = getUserInput(
                 "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
-                s -> s.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$"),
+                s -> s.matches(PASSWORD_REGEX),
                 "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit.");
         boolean confirmation = getUserInput(
                 "Confirm adding a new user with the information you just added (Y/N): ",
@@ -137,17 +137,17 @@ public class SentinelShield {
     private void viewStaffTicketsScreen() {
         boolean conloop = true;
         String menuString = "Please make a selection from the options below:\n"
-        + "(1) Create a new ticket\n"
-        + "(2) View your tickets\n"
-        + "(3) Exit\n";
+                + "(1) Create a new ticket\n"
+                + "(2) View your tickets\n"
+                + "(3) Exit\n";
         String userinputeString = "";
-        while (conloop){
+        while (conloop) {
             userinputeString = getUserInput(menuString);
-            if (userinputeString.equals("1")){
+            if (userinputeString.equals("1")) {
                 createTicketScreen();
-            } else if (userinputeString.equals("2")){
+            } else if (userinputeString.equals("2")) {
                 viewTicketsScreen();
-            } else if (userinputeString.equals("3")){
+            } else if (userinputeString.equals("3")) {
                 conloop = false;
             } else {
                 System.out.println("Invalid option, please enter the number of your selection.");
@@ -164,7 +164,10 @@ public class SentinelShield {
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
-        // TODO
+        String issue = getUserInput("Please input a description of the IT issue: ");
+        String severity = getUserInput("Please input the severity of the issue: ");
+        Ticket createdTicket = new Ticket(issue, severity, "open", "", "");
+        // TODO assign the ticket to someone.
     }
 
     // The viewTicketsScreen() method, handles the user interface
@@ -189,7 +192,7 @@ public class SentinelShield {
     public void run() {
         // TEST CODE, REMOVE BEFORE SUBMISSION
         users.put("test@test.com", new User("test@test.com", "test", "test",
-        "0412345678", "Test123456789123456789", false));
+                "0412345678", "Test123456789123456789", false));
 
         // TODO - this basically needs to follow Paul's flowchart diagram.
         // TODO - Potentially add some kind of main menu?
@@ -203,10 +206,12 @@ public class SentinelShield {
                 System.out.println("(3) Forgot Password");
                 System.out.println("(4) Exit");
                 input = console.nextLine();
-                if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0 && input.compareTo("4") != 0) {
+                if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0
+                        && input.compareTo("4") != 0) {
                     System.out.println("Invalid option, please enter the number of your selection.");
                 }
-            } while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0 && input.compareTo("4") != 0);
+            } while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0
+                    && input.compareTo("4") != 0);
 
             if (input.compareTo("1") == 0) {
                 signupScreen();
