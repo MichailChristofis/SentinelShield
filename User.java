@@ -3,6 +3,7 @@
 // and whether or not they are a technician.
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private String email, firstName, lastName, phoneNumber, password;
@@ -93,6 +94,10 @@ public class User {
     // for whether the user is a technician.
     public void setIsTechnician(boolean isTechnician) {
         this.isTechnician = isTechnician;
+    }
+
+    public List<Ticket> getTickets() {
+        return this.tickets;
     }
 
 }

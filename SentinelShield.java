@@ -6,7 +6,9 @@
 
 import java.util.Scanner;
 import java.util.function.Predicate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SentinelShield {
@@ -156,9 +158,40 @@ public class SentinelShield {
     }
 
     private void viewTechTicketsScreen() {
+        System.out.println("Welcome, " + currentUser.getFirstName() + ".");
+        int i = 1;
+        List<Ticket> tickets = new ArrayList<>();
+        for (User u : this.users.values()) {
+            for (Ticket t : u.getTickets()) {
+                tickets.add(t);
+                System.out.printf("%d%30s%10s%15s", i, u.getFirstName() + " " + u.getLastName(), t.getSeverity(),
+                        t.getDescription());
+                i++;
+            }
+        }
+        String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.";
+        String choice = getUserInput(prompt, s -> {
+            if (s.toLowerCase().equals("q")) {
+                return true;
+            }
+            try {
+                Integer.parseInt(s);
+                return true;
+            } catch (NumberFormatException _e) {
+                return false;
+            }
+        }, prompt);
+        if (choice.toLowerCase().equals("q")) {
+            return;
+        } else {
+            int ticketNo = Integer.parseInt(choice);
+            techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
+        }
+
+    }
+
+    private void techViewIndividualTicketScreen(Ticket ticket) {
         // TODO
-        getUserInput("Welcome, " + currentUser.getFirstName()
-                + ". The rest of this program doesn't exist yet, please press any key to exit.");
     }
 
     // The createTicketScreen() method, handles the user interface
