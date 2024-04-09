@@ -25,15 +25,19 @@ public class Ticket {
 
     // This stores the users which created this ticket's email so it can be
     // accessed without searching through the list of all staff.
-    private String createdBy;
+    private User createdBy;
 
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, String severity, String ticketStatus, String dateCompleted, String creator) {
+    public Ticket(String description, String severity, String ticketStatus, String dateCompleted, User creator) {
         this.description = description;
         this.severity = Severity.valueOf(severity);
         this.ticketStatus = TicketStatus.valueOf(ticketStatus);
         this.dateCompleted = LocalDate.parse(dateCompleted, DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
         this.createdBy = creator;
+    }
+
+    public User getCreatedBy() {
+        return this.createdBy;
     }
 
     // The getDescription() method is a getter method,

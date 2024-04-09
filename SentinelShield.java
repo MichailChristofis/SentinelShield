@@ -164,7 +164,7 @@ public class SentinelShield {
         for (User u : this.users.values()) {
             for (Ticket t : u.getTickets()) {
                 tickets.add(t);
-                System.out.printf("%d%30s%10s%15s", i, u.getFirstName() + " " + u.getLastName(), t.getSeverity(),
+                System.out.printf("%d%30s%10s%15s%n", i, u.getFirstName() + " " + u.getLastName(), t.getSeverity(),
                         t.getDescription());
                 i++;
             }
@@ -191,7 +191,11 @@ public class SentinelShield {
     }
 
     private void techViewIndividualTicketScreen(Ticket ticket) {
-        // TODO
+        System.out.printf("Author: %s%n",
+                ticket.getCreatedBy().getFirstName() + ticket.getCreatedBy().getLastName());
+        System.out.printf("Severity: %s%n", ticket.getSeverity());
+        System.out.printf("Status: %s%n", ticket.getTicketStatus());
+        System.out.printf("Description: %s%n", ticket.getDescription());
     }
 
     // The createTicketScreen() method, handles the user interface
@@ -199,7 +203,7 @@ public class SentinelShield {
     private void createTicketScreen() {
         String issue = getUserInput("Please input a description of the IT issue: ");
         String severity = getUserInput("Please input the severity of the issue: ");
-        Ticket createdTicket = new Ticket(issue, severity, "open", "", "");
+        Ticket createdTicket = new Ticket(issue, severity, "open", "", null);
         // TODO assign the ticket to someone.
     }
 
