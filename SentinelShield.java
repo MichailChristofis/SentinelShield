@@ -196,6 +196,13 @@ public class SentinelShield {
         System.out.printf("Severity: %s%n", ticket.getSeverity());
         System.out.printf("Status: %s%n", ticket.getTicketStatus());
         System.out.printf("Description: %s%n", ticket.getDescription());
+        int choice = Integer
+                .parseInt(getUserInput("Would you like to (1) Edit this ticket, or (2) Go back to the technician menu?",
+                        s -> s.equals("1") || s.equals("2"), "Please enter 1 or 2."));
+        if (choice == 2) {
+            return;
+        }
+        // TODO Edit Ticket @Paul todo
     }
 
     // The createTicketScreen() method, handles the user interface
