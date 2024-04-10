@@ -27,13 +27,21 @@ public class Ticket {
     // accessed without searching through the list of all staff.
     private User createdBy;
 
+    // This stores the technical who is currently assigned to this ticket.
+    private User assignedTechnician;
+
     // The Ticket() method is a constructor for the Ticket class.
     public Ticket(String description, String severity, String ticketStatus, String dateCompleted, User creator) {
         this.description = description;
         this.severity = Severity.valueOf(severity);
         this.ticketStatus = TicketStatus.valueOf(ticketStatus);
-        this.dateCompleted = LocalDate.parse(dateCompleted, DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
+        // There is no date completed because we are just creating the ticket now, rather than accepting strings,
+        // Please accept a Date, forcing the caller to either conform the date themselves, or pass null
+        // this.dateCompleted = LocalDate.parse(dateCompleted, DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
+        // Placeholder:
+        this.dateCompleted = null;
         this.createdBy = creator;
+        this.assignedTechnician = null;
     }
 
     public User getCreatedBy() {
@@ -60,9 +68,17 @@ public class Ticket {
 
     // The setSeverity() method is a setter method,
     // for the ticket's severity.
-    public void setSeverity(Severity severity) {
+    public void setSeverity(Severity severity) {        
         this.severity = severity;
     }
+    // Todo: Once this is called from the menu, execute relevant code:
+    // It could be placed in the setter however Ticket holds no reference to ServiceDesk
+    /*
+    // Check if we need to reassign
+    if ((this.severity == Severity.High) && (severity != Severity.High) || (this.severity != Severity.High) && (severity == Severity.High)) {
+        serviceDesk.AssignTicket(createdTicket);        
+    }
+    */
 
     // The getTicketStatus() method is a getter method,
     // for the ticket's status.
@@ -98,6 +114,10 @@ public class Ticket {
     // for the ticket's archived status.
     public void setIsArchived(boolean isArchived) {
         this.archived = isArchived;
+    }
+
+    public void AssignTicket(User assignTo) {
+        this.assignedTechnician = assignTo;
     }
 
 }
