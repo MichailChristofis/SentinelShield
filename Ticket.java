@@ -23,7 +23,7 @@ public class Ticket {
     private String description;
     private Severity severity;
     private TicketStatus ticketStatus;
-    private LocalDate dateCompleted;
+    private LocalDate dateCompleted, dateCreated;
 
     // This stores the users which created this ticket's email so it can be
     // accessed without searching through the list of all staff.
@@ -34,9 +34,36 @@ public class Ticket {
 
     // The Ticket() method is a constructor for the Ticket class.
     public Ticket(String description, String severity, String ticketStatus, String dateCompleted, User creator) {
-        this.description = description;
+        setValue(description, creator);
         this.severity = Severity.valueOf(severity);
         this.ticketStatus = TicketStatus.valueOf(ticketStatus);
+    }
+
+    // The Ticket() method is a constructor for the Ticket class.
+    public Ticket(String description, String severity, int ticketStatus, String dateCompleted, User creator) {
+        setValue(description, creator);
+    	this.severity = Severity.valueOf(severity);
+    	setTicketStatus(ticketStatus);
+    }
+    
+    // The Ticket() method is a constructor for the Ticket class.
+    public Ticket(String description, int severity, int ticketStatus, String dateCompleted, User creator) {
+        setValue(description, creator);
+        setSeverity(severity);
+    	setTicketStatus(ticketStatus);
+    }
+    
+    // The Ticket() method is a constructor for the Ticket class.
+    public Ticket(String description, int severity, String ticketStatus, String dateCompleted, User creator) {
+        setValue(description, creator);
+        setSeverity(severity);
+        this.ticketStatus = TicketStatus.valueOf(ticketStatus);
+    }
+    
+    //The setValue method, sets the values for the constructors
+    //so as to avoid code repetition.
+    private void setValue(String description, User creator) {
+    	this.description = description;
         // There is no date completed because we are just creating the ticket now, rather than accepting strings,
         // Please accept a Date, forcing the caller to either conform the date themselves, or pass null
         // this.dateCompleted = LocalDate.parse(dateCompleted, DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
@@ -44,8 +71,37 @@ public class Ticket {
         this.dateCompleted = null;
         this.createdBy = creator;
         this.assignedTechnician = null;
+        this.dateCreated=LocalDate.now();
     }
-
+    
+    //The setTicketStatus method sets the value of the TicketStatus
+    //when an integer is used for the constructor
+    private void setTicketStatus(int severity) {
+        if(severity==0) {
+            this.ticketStatus = TicketStatus.valueOf("Low");
+        }
+        else if(severity==1) {
+            this.ticketStatus = TicketStatus.valueOf("Medium");
+        }
+        else if(severity==2) {
+            this.ticketStatus = TicketStatus.valueOf("High");
+        }
+    }
+    
+    //The setSeverity method sets the value of Severity
+    //when an integer is used for the constructor
+    private void setSeverity(int ticketStatus) {
+        if(ticketStatus==0) {
+            this.ticketStatus = TicketStatus.valueOf("Open");
+        }
+        else if(ticketStatus==1) {
+            this.ticketStatus = TicketStatus.valueOf("CompletedResolved");
+        }
+        else if(ticketStatus==2) {
+            this.ticketStatus = TicketStatus.valueOf("CompletedUnresolved");
+        }
+    }
+    
     public User getCreatedBy() {
         return this.createdBy;
     }
@@ -131,6 +187,18 @@ public class Ticket {
     public void setDateCompleted(LocalDate dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
+    
+    // The getDateCreated() method is a getter method,
+    // for the ticket's date.
+    public LocalDate getDateCreated() {
+        return this.dateCreated;
+    }
+
+    // The setDateCreated() method is a setter method,
+    // for the ticket's date.
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCompleted = dateCreated;
+    }
 
     // The getIsArchived() method is a getter method,
     // for the ticket's archived status.
@@ -143,7 +211,21 @@ public class Ticket {
     public void setIsArchived(boolean isArchived) {
         this.archived = isArchived;
     }
-
+    
+    //The getAssignedTechnician method is a getter method
+    //for the assigned technician.
+    public User getAssignedTechnician() {
+    	return this.assignedTechnician;
+    }
+    
+    //The setAssignedTechnician method is a setter method
+    //for the assigned technician
+    public void setAssignedTechnician(User assignedTechnician) {
+    	this.assignedTechnician=assignedTechnician;
+    }
+    
+    //The AssignTicket method is used to assign a ticket
+    //to a particular technician.
     public void AssignTicket(User assignTo) {
         this.assignedTechnician = assignTo;
         assignTo.assignTicket(this);
