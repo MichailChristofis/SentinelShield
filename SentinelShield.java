@@ -174,7 +174,7 @@ public class SentinelShield {
                 i++;
             }
         }
-        String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.";
+        String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
         String choice = getUserInput(prompt, s -> {
             if (s.toLowerCase().equals("q")) {
                 return true;
@@ -202,12 +202,39 @@ public class SentinelShield {
         System.out.printf("Status: %s%n", ticket.getTicketStatus());
         System.out.printf("Description: %s%n", ticket.getDescription());
         int choice = Integer
-                .parseInt(getUserInput("Would you like to (1) Edit this ticket, or (2) Go back to the technician menu?",
-                        s -> s.equals("1") || s.equals("2"), "Please enter 1 or 2."));
+                .parseInt(getUserInput("Would you like to (1) Edit this ticket, (2) Update the status of this ticket, or (3) Go back to the technician menu?\n",
+                        s -> s.equals("1") || s.equals("2")|| s.equals("3"), "Please enter 1, 2, or 3."));
         if (choice == 2) {
+            updateTicketStatusMenu(ticket);
+            return;
+        }
+        if (choice == 3) {
             return;
         }
         // TODO Edit Ticket @Paul todo
+    }
+
+    private void updateTicketStatusMenu(Ticket ticket) {
+        // If the ticket isn't archived
+        if (!ticket.getIsArchived()) {
+            int choice = Integer
+                .parseInt(getUserInput("Would you like to set the ticket status to:\n(1) Open\n(2) Completed (Resolved), or\n(3) Completed (Unresolved)\n",
+                        s -> s.equals("1") || s.equals("2")|| s.equals("3"), "Please enter 1, 2, or 3."));
+            switch (choice) {
+                case 1:
+                    ticket.setTicketStatus(Ticket.TicketStatus.Open);
+                    break;
+                case 2: 
+                    ticket.setTicketStatus(Ticket.TicketStatus.CompletedResolved);  
+                    break;
+                case 3:
+                    ticket.setTicketStatus(Ticket.TicketStatus.CompletedUnresolved);
+                    break;
+            }
+
+        } else {
+            System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
+        }
     }
 
     // The createTicketScreen() method, handles the user interface
