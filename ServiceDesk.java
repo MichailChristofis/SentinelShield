@@ -6,6 +6,7 @@
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.List;
 
 // import Ticket;
 
@@ -27,11 +28,11 @@ public class ServiceDesk {
 
         // First, get the severity
         boolean isHighSeverity = (toAssign.getSeverity() == Ticket.Severity.High);
-        
+
         // If the severity is high, assign to a level 2 technician.
         // Otherwise, assign to a level 1 technician
         User[] targetServiceDesk = isHighSeverity ? techniciansLevel2 : techniciansLevel1;
-        
+
         // Now chose a specific user to assign to
         User targetUser = PickUserForTicket(targetServiceDesk);
         toAssign.AssignTicket(targetUser);
@@ -68,15 +69,21 @@ public class ServiceDesk {
 
     // Refresh ticket status to automatically archive after 24 hours, per Sprint 2 9.1
     public void automaticallyRefreshTickets() {
-    TimerTask task = new TimerTask() {
-        public void run() {
-            System.out.println("Task performed on: " + "Whenever lol" + "n" +
-              "Thread's name: " + Thread.currentThread().getName());
+        // The tickets are stored in the technician
+        // So process everything for each technician
+        processAllUserTickets(techniciansLevel1);
+        processAllUserTickets(techniciansLevel2);
+    }
+
+    private void processAllUserTickets(User[] users) {
+        // Now, for each user, walk through all their tickets
+        for (User technician : users) {
+            List<Ticket> tickets = technician.getTickets();
+            // For every ticket
+            for (Ticket ticket : tickets) {
+                // Update the ticket
+                ticket.refreshTicketStatus();
+            }
         }
-    };
-    Timer timer = new Timer("Timer");
-    
-    long delay = 3L;
-    timer.schedule(task, delay);
-}
+    }
 }

@@ -144,6 +144,9 @@ public class SentinelShield {
                 + "(3) Exit\n";
         String userinputeString = "";
         while (conloop) {
+            // Refresh ticket status every time the menu is returned to
+            serviceDesk.automaticallyRefreshTickets();
+
             userinputeString = getUserInput(menuString);
             if (userinputeString.equals("1")) {
                 createTicketScreen();
@@ -158,6 +161,8 @@ public class SentinelShield {
     }
 
     private void viewTechTicketsScreen() {
+        // Refresh ticket status every time the menu is returned to
+        serviceDesk.automaticallyRefreshTickets();
         System.out.println("Welcome, " + currentUser.getFirstName() + ".");
         int i = 1;
         List<Ticket> tickets = new ArrayList<>();
@@ -239,13 +244,13 @@ public class SentinelShield {
         users.put("test@test.com", new User("test@test.com", "test", "test",
                 "0412345678", "Test123456789123456789", false));
 
-        // Start the timer to automatically refresh ticket status
-        serviceDesk.automaticallyRefreshTickets();
-        
+
         // TODO - this basically needs to follow Paul's flowchart diagram.
         // TODO - Potentially add some kind of main menu?
         boolean conloop = true;
         while (conloop) {
+            // Refresh ticket status every time the menu is returned to
+            serviceDesk.automaticallyRefreshTickets();
             String input = "";
             do {
                 System.out.println("Please select if you would like to sign up, or login:");

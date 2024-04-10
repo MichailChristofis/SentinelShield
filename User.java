@@ -100,4 +100,7 @@ public class User {
         return this.tickets;
     }
 
+    public void assignTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
 }

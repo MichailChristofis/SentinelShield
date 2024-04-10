@@ -98,11 +98,13 @@ public class Ticket {
     // We're not using this.dateCompleted because that may be managed and changed externally
     private Instant timeMarkedCompleted;
     // Automatically archive ticket if marked complete over 24 hours ago
-    private void refreshTicketStatus(){
+    public void refreshTicketStatus(){
         // Make sure the ticket hasn't been marked Open, otherwise ignore the call
         if (this.ticketStatus == TicketStatus.Open) {
             timeMarkedCompleted = null;
+            return;
         } else if (this.ticketStatus == null) {
+            timeMarkedCompleted = null;
             // Bail out
             return;
         }
@@ -116,8 +118,6 @@ public class Ticket {
         if (timeMarkedCompleted.isBefore(Instant.now().minus(24, ChronoUnit.HOURS))) {
             setIsArchived(true);
         }
-
-
     }
 
     // The getDateCompleted() method is a getter method,
@@ -146,6 +146,7 @@ public class Ticket {
 
     public void AssignTicket(User assignTo) {
         this.assignedTechnician = assignTo;
+        assignTo.assignTicket(this);
     }
 
 }
