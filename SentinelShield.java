@@ -161,6 +161,8 @@ public class SentinelShield {
     }
 
     private void viewTechTicketsScreen() {
+        // Loop until the function returns
+        while (true) {
         // Refresh ticket status every time the menu is returned to
         serviceDesk.automaticallyRefreshTickets();
         System.out.println("Welcome, " + currentUser.getFirstName() + ".");
@@ -192,6 +194,7 @@ public class SentinelShield {
             int ticketNo = Integer.parseInt(choice);
             techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
         }
+        }
 
     }
 
@@ -202,7 +205,7 @@ public class SentinelShield {
         System.out.printf("Status: %s%n", ticket.getTicketStatus());
         System.out.printf("Description: %s%n", ticket.getDescription());
         int choice = Integer
-                .parseInt(getUserInput("Would you like to (1) Edit this ticket, (2) Update the status of this ticket, or (3) Go back to the technician menu?\n",
+                .parseInt(getUserInput("Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket, or\n(3) Go back to the technician menu\n",
                         s -> s.equals("1") || s.equals("2")|| s.equals("3"), "Please enter 1, 2, or 3."));
         if (choice == 2) {
             updateTicketStatusMenu(ticket);
