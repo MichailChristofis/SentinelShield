@@ -215,7 +215,7 @@ public class SentinelShield {
     private void createTicketScreen() {
         String issue = getUserInput("Please input a description of the IT issue: ");
         String severity = getUserInput("Please input the severity of the issue: ");
-        Ticket createdTicket = new Ticket(issue, severity, "Open", null, null);
+        Ticket createdTicket = new Ticket(issue, severity, "Open", null, currentUser);
         // Assign the ticket to the Service Desk, and therefore user
         serviceDesk.AssignTicket(createdTicket);
     }
