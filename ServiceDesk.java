@@ -4,6 +4,8 @@
 // to each technician
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 // import Ticket;
 
@@ -63,4 +65,18 @@ public class ServiceDesk {
         }
         return topTechnician;
     }
+
+    // Refresh ticket status to automatically archive after 24 hours, per Sprint 2 9.1
+    public void automaticallyRefreshTickets() {
+    TimerTask task = new TimerTask() {
+        public void run() {
+            System.out.println("Task performed on: " + "Whenever lol" + "n" +
+              "Thread's name: " + Thread.currentThread().getName());
+        }
+    };
+    Timer timer = new Timer("Timer");
+    
+    long delay = 3L;
+    timer.schedule(task, delay);
+}
 }

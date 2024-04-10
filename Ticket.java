@@ -2,7 +2,9 @@
 // status, description, and the date of its completion.
 
 import java.time.LocalDate;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Ticket {
     enum Severity {
@@ -89,7 +91,33 @@ public class Ticket {
     // The setTicketStatus() method is a setter method,
     // for the ticket's status.
     public void setTicketStatus(TicketStatus ticketStatus) {
-        this.ticketStatus = ticketStatus;
+        this.ticketStatus = ticketStatus;        
+        refreshTicketStatus();
+    }
+
+    // We're not using this.dateCompleted because that may be managed and changed externally
+    private Instant timeMarkedCompleted;
+    // Automatically archive ticket if marked complete over 24 hours ago
+    private void refreshTicketStatus(){
+        // Make sure the ticket hasn't been marked Open, otherwise ignore the call
+        if (this.ticketStatus == TicketStatus.Open) {
+            timeMarkedCompleted = null;
+        } else if (this.ticketStatus == null) {
+            // Bail out
+            return;
+        }
+        // We have a valid ticketStatus that isn't open, check if we already have a valid time,
+        // and if not, update it now:
+        if (timeMarkedCompleted == null) {
+            timeMarkedCompleted = Instant.now();
+        }
+
+        // Check if it's been more that 24 hours
+        if (timeMarkedCompleted.isBefore(Instant.now().minus(24, ChronoUnit.HOURS))) {
+            setIsArchived(true);
+        }
+
+
     }
 
     // The getDateCompleted() method is a getter method,

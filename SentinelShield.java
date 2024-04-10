@@ -239,6 +239,9 @@ public class SentinelShield {
         users.put("test@test.com", new User("test@test.com", "test", "test",
                 "0412345678", "Test123456789123456789", false));
 
+        // Start the timer to automatically refresh ticket status
+        serviceDesk.automaticallyRefreshTickets();
+        
         // TODO - this basically needs to follow Paul's flowchart diagram.
         // TODO - Potentially add some kind of main menu?
         boolean conloop = true;
