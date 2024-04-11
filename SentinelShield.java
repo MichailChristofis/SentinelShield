@@ -261,6 +261,7 @@ public class SentinelShield {
         Ticket createdTicket = new Ticket(issue, severityInt, "Open", currentUser);
         // Assign the ticket to the Service Desk, and therefore user
         serviceDesk.AssignTicket(createdTicket);
+        currentUser.assignTicket(createdTicket);
     }
 
     // The viewTicketsScreen() method, handles the user interface
