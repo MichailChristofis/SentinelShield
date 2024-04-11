@@ -386,7 +386,6 @@ public class SentinelShield {
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
         techniciansLevel2[2] = new User("st", "SkyTech", "SkyTech", "0", "st", true);
-        techniciansLevel2[2].getTickets().add(new Ticket("Test Description", "High", techniciansLevel2[2]));
 
         // Add the technicians to the user map
         Map<String, User> users = new HashMap<>();
