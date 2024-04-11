@@ -166,15 +166,14 @@ public class SentinelShield {
             // Refresh ticket status every time the menu is returned to
             serviceDesk.automaticallyRefreshTickets();
             System.out.println("Welcome, " + currentUser.getFirstName() + ".");
+            // We only need to display a technician's own tickets here            
             int i = 1;
             List<Ticket> tickets = new ArrayList<>();
-            for (User u : this.users.values()) {
-                for (Ticket t : u.getTickets()) {
-                    tickets.add(t);
-                    System.out.printf("%d%30s%10s%15s%n", i, u.getFirstName() + " " + u.getLastName(), t.getSeverity(),
-                            t.getDescription());
-                    i++;
-                }
+            for (Ticket t : currentUser.getTickets()) {
+                tickets.add(t);
+                System.out.printf("%d%30s%10s%15s%n", i, t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(), t.getSeverity(),
+                        t.getDescription());
+                i++;
             }
             String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
             String choice = getUserInput(prompt, s -> {
@@ -308,8 +307,6 @@ public class SentinelShield {
         // Just because I'm a sadist doesn't mean I'm a masochist.
         users.put("ss", new User("ss", "SkyService", "SkyService",
             "0", "ss", false));
-        users.put("st", new User("st", "SkyTech", "SkyTech",
-            "0", "st", true));
 
         // END TEST CODE
         boolean conloop = true;
@@ -352,10 +349,11 @@ public class SentinelShield {
                 true);
         techniciansLevel1[1] = new User("niallhorran@gmail.com", "Niall", "Horan", "(02) 5678 1234", "nialnial", true);
         techniciansLevel1[2] = new User("liampayne@gmail.com", "Liam", "Payne", "(02) 1234 5666", "limaliam", true);
-        techniciansLevel2 = new User[2];
+        techniciansLevel2 = new User[3];
         techniciansLevel2[0] = new User("louistomlison@gmail.com", "Louis", "Tomlison", "(02) 1234 1234", "louislouis",
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
+        techniciansLevel2[2] = new User("st", "SkyTech", "SkyTech", "0", "st", true);
 
         // Add the technicians to the user map
         Map<String, User> users = new HashMap<>();
