@@ -33,31 +33,18 @@ public class Ticket {
     private User assignedTechnician;
 
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, String severity, String ticketStatus, User creator) {
+    public Ticket(String description, String severity, User creator) {
         setValue(description, creator);
-        this.severity = Severity.valueOf(severity);
-        this.ticketStatus = TicketStatus.valueOf(ticketStatus);
-    }
-
-    // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, String severity, int ticketStatus, User creator) {
-        setValue(description, creator);
-    	this.severity = Severity.valueOf(severity);
-    	setTicketStatus(ticketStatus);
-    }
-    
-    // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, int severity, int ticketStatus, User creator) {
-        setValue(description, creator);
-        setSeverity(severity);
-    	setTicketStatus(ticketStatus);
-    }
-    
-    // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, int severity, String ticketStatus, User creator) {
-        setValue(description, creator);
-        setSeverity(severity);
-        this.ticketStatus = TicketStatus.valueOf(ticketStatus);
+        if (severity.compareTo("1") == 0){
+            this.severity = Severity.Low;
+        } else if (severity.compareTo("2") == 0){
+            this.severity = Severity.Medium;
+        } else if (severity.compareTo("3") == 0){
+            this.severity = Severity.High;
+        } else {
+            this.severity = null;
+        }
+        this.ticketStatus = TicketStatus.Open;
     }
     
     //The setValue method, sets the values for the constructors

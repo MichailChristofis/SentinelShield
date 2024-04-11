@@ -257,8 +257,7 @@ public class SentinelShield {
                 System.out.println("Invalid option, please enter the number of your selection.");
             }
         } while (severity.compareTo("1") != 0 && severity.compareTo("2") != 0 && severity.compareTo("3") != 0);
-        Integer severityInt = Integer.parseInt(severity);
-        Ticket createdTicket = new Ticket(issue, severityInt, "Open", currentUser);
+        Ticket createdTicket = new Ticket(issue, severity, currentUser);
         // Assign the ticket to the Service Desk, and therefore user
         serviceDesk.AssignTicket(createdTicket);
         currentUser.assignTicket(createdTicket);
@@ -304,8 +303,8 @@ public class SentinelShield {
         // TEST CODE, REMOVE BEFORE SUBMISSION
         users.put("test@test.com", new User("test@test.com", "test", "test",
                 "0412345678", "test", false));
-        serviceDesk.AssignTicket(new Ticket("Test ticket", "Low", "Open", users.get("test")));
-        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "High", "Open", users.get("test")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test")));
 
         // END TEST CODE
         boolean conloop = true;
