@@ -377,11 +377,11 @@ public class SentinelShield {
         // Create the technician for this system.
         User[] techniciansLevel1, techniciansLevel2;
         techniciansLevel1 = new User[3];
+        techniciansLevel2 = new User[3];
         techniciansLevel1[0] = new User("harrystyles@gmail.com", "Harry", "Styles", "(02) 1234 5678", "harryharry",
                 true);
         techniciansLevel1[1] = new User("niallhorran@gmail.com", "Niall", "Horan", "(02) 5678 1234", "nialnial", true);
         techniciansLevel1[2] = new User("liampayne@gmail.com", "Liam", "Payne", "(02) 1234 5666", "limaliam", true);
-        techniciansLevel2 = new User[3];
         techniciansLevel2[0] = new User("louistomlison@gmail.com", "Louis", "Tomlison", "(02) 1234 1234", "louislouis",
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
