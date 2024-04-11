@@ -166,12 +166,14 @@ public class SentinelShield {
             // Refresh ticket status every time the menu is returned to
             serviceDesk.automaticallyRefreshTickets();
             System.out.println("Welcome, " + currentUser.getFirstName() + ".");
-            // We only need to display a technician's own tickets here            
+            // We only need to display a technician's own tickets here
             int i = 1;
             List<Ticket> tickets = new ArrayList<>();
             for (Ticket t : currentUser.getTickets()) {
                 tickets.add(t);
-                System.out.printf("%d%30s%10s%15s%n", i, t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(), t.getSeverity(),
+                System.out.printf("%-3d%-30s%-10s%-15s%n", i,
+                        t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(),
+                        t.getSeverity(),
                         t.getTicketStatus(), t.getDescription());
                 i++;
             }
@@ -206,14 +208,15 @@ public class SentinelShield {
         int choice = Integer
                 .parseInt(getUserInput(
                         "Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket\n(3) Update the severity of the ticket, or\n(4) Go back to the technician menu\n",
-                        s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"), "Please enter 1, 2, 3 or 4."));
+                        s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
+                        "Please enter 1, 2, 3 or 4."));
         if (choice == 2) {
             updateTicketStatusMenu(ticket);
             return;
         }
         if (choice == 3) {
             updateTicketSeverityMenu(ticket);
-        }        
+        }
         if (choice == 4) {
             return;
         }
@@ -242,7 +245,7 @@ public class SentinelShield {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
         }
     }
-    
+
     private void updateTicketSeverityMenu(Ticket ticket) {
         // If the ticket isn't archived
         if (!ticket.getIsArchived()) {
@@ -265,8 +268,8 @@ public class SentinelShield {
         } else {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
         }
-    } 
-    
+    }
+
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
@@ -332,7 +335,7 @@ public class SentinelShield {
 
         // Just because I'm a sadist doesn't mean I'm a masochist.
         users.put("ss", new User("ss", "SkyService", "SkyService",
-            "0", "ss", false));
+                "0", "ss", false));
 
         // END TEST CODE
         boolean conloop = true;
@@ -380,6 +383,7 @@ public class SentinelShield {
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
         techniciansLevel2[2] = new User("st", "SkyTech", "SkyTech", "0", "st", true);
+        techniciansLevel2[2].getTickets().add(new Ticket("Test Description", "High", techniciansLevel2[2]));
 
         // Add the technicians to the user map
         Map<String, User> users = new HashMap<>();
