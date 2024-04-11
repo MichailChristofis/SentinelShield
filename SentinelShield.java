@@ -303,13 +303,13 @@ public class SentinelShield {
             System.out.println("Your tickets:");
             for (int i = 0; i < tickets.size(); i++) {
                 if (!tickets.get(i).getIsArchived()) {
-                    System.out.println("Ticket description:");
+                    System.out.print("Ticket description  :");
                     System.out.println(tickets.get(i).getDescription());
-                    System.out.println("Ticket severity:");
+                    System.out.print("Ticket severity:  ");
                     System.out.println(tickets.get(i).getSeverity());
-                    System.out.println("Ticket status:");
+                    System.out.print("Ticket status:  ");
                     System.out.println(tickets.get(i).getTicketStatus());
-                    System.out.println("Date created:");
+                    System.out.print("Date created:  ");
                     System.out.println(tickets.get(i).getDateCreated());
                 }
             }
