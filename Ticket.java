@@ -33,28 +33,28 @@ public class Ticket {
     private User assignedTechnician;
 
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, String severity, String ticketStatus, String dateCompleted, User creator) {
+    public Ticket(String description, String severity, String ticketStatus, User creator) {
         setValue(description, creator);
         this.severity = Severity.valueOf(severity);
         this.ticketStatus = TicketStatus.valueOf(ticketStatus);
     }
 
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, String severity, int ticketStatus, String dateCompleted, User creator) {
+    public Ticket(String description, String severity, int ticketStatus, User creator) {
         setValue(description, creator);
     	this.severity = Severity.valueOf(severity);
     	setTicketStatus(ticketStatus);
     }
     
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, int severity, int ticketStatus, String dateCompleted, User creator) {
+    public Ticket(String description, int severity, int ticketStatus, User creator) {
         setValue(description, creator);
         setSeverity(severity);
     	setTicketStatus(ticketStatus);
     }
     
     // The Ticket() method is a constructor for the Ticket class.
-    public Ticket(String description, int severity, String ticketStatus, String dateCompleted, User creator) {
+    public Ticket(String description, int severity, String ticketStatus, User creator) {
         setValue(description, creator);
         setSeverity(severity);
         this.ticketStatus = TicketStatus.valueOf(ticketStatus);

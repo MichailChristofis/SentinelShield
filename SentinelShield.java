@@ -76,9 +76,9 @@ public class SentinelShield {
         // Print login success message based on whether or not user is technician
         // TODO Update me when there are separate dashboard functions
         if (currentUser.getIsTechnician()) {
-            viewTechTicketsScreen();
+            viewTechMenu();
         } else {
-            viewStaffTicketsScreen();
+            viewStaffMenu();
         }
 
     }
@@ -136,7 +136,7 @@ public class SentinelShield {
 
     // The signupScreen() method, handles the user interface
     // and communication with the user, for the signup screen.
-    private void viewStaffTicketsScreen() {
+    private void viewStaffMenu() {
         boolean conloop = true;
         String menuString = "Please make a selection from the options below:\n"
                 + "(1) Create a new ticket\n"
@@ -160,40 +160,40 @@ public class SentinelShield {
         }
     }
 
-    private void viewTechTicketsScreen() {
+    private void viewTechMenu() {
         // Loop until the function returns
         while (true) {
-        // Refresh ticket status every time the menu is returned to
-        serviceDesk.automaticallyRefreshTickets();
-        System.out.println("Welcome, " + currentUser.getFirstName() + ".");
-        int i = 1;
-        List<Ticket> tickets = new ArrayList<>();
-        for (User u : this.users.values()) {
-            for (Ticket t : u.getTickets()) {
-                tickets.add(t);
-                System.out.printf("%d%30s%10s%15s%n", i, u.getFirstName() + " " + u.getLastName(), t.getSeverity(),
-                        t.getDescription());
-                i++;
+            // Refresh ticket status every time the menu is returned to
+            serviceDesk.automaticallyRefreshTickets();
+            System.out.println("Welcome, " + currentUser.getFirstName() + ".");
+            int i = 1;
+            List<Ticket> tickets = new ArrayList<>();
+            for (User u : this.users.values()) {
+                for (Ticket t : u.getTickets()) {
+                    tickets.add(t);
+                    System.out.printf("%d%30s%10s%15s%n", i, u.getFirstName() + " " + u.getLastName(), t.getSeverity(),
+                            t.getDescription());
+                    i++;
+                }
             }
-        }
-        String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
-        String choice = getUserInput(prompt, s -> {
-            if (s.toLowerCase().equals("q")) {
-                return true;
+            String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
+            String choice = getUserInput(prompt, s -> {
+                if (s.toLowerCase().equals("q")) {
+                    return true;
+                }
+                try {
+                    Integer.parseInt(s);
+                    return true;
+                } catch (NumberFormatException _e) {
+                    return false;
+                }
+            }, prompt);
+            if (choice.toLowerCase().equals("q")) {
+                return;
+            } else {
+                int ticketNo = Integer.parseInt(choice);
+                techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
             }
-            try {
-                Integer.parseInt(s);
-                return true;
-            } catch (NumberFormatException _e) {
-                return false;
-            }
-        }, prompt);
-        if (choice.toLowerCase().equals("q")) {
-            return;
-        } else {
-            int ticketNo = Integer.parseInt(choice);
-            techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
-        }
         }
 
     }
@@ -205,8 +205,9 @@ public class SentinelShield {
         System.out.printf("Status: %s%n", ticket.getTicketStatus());
         System.out.printf("Description: %s%n", ticket.getDescription());
         int choice = Integer
-                .parseInt(getUserInput("Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket, or\n(3) Go back to the technician menu\n",
-                        s -> s.equals("1") || s.equals("2")|| s.equals("3"), "Please enter 1, 2, or 3."));
+                .parseInt(getUserInput(
+                        "Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket, or\n(3) Go back to the technician menu\n",
+                        s -> s.equals("1") || s.equals("2") || s.equals("3"), "Please enter 1, 2, or 3."));
         if (choice == 2) {
             updateTicketStatusMenu(ticket);
             return;
@@ -221,14 +222,15 @@ public class SentinelShield {
         // If the ticket isn't archived
         if (!ticket.getIsArchived()) {
             int choice = Integer
-                .parseInt(getUserInput("Would you like to set the ticket status to:\n(1) Open\n(2) Completed (Resolved), or\n(3) Completed (Unresolved)\n",
-                        s -> s.equals("1") || s.equals("2")|| s.equals("3"), "Please enter 1, 2, or 3."));
+                    .parseInt(getUserInput(
+                            "Would you like to set the ticket status to:\n(1) Open\n(2) Completed (Resolved), or\n(3) Completed (Unresolved)\n",
+                            s -> s.equals("1") || s.equals("2") || s.equals("3"), "Please enter 1, 2, or 3."));
             switch (choice) {
                 case 1:
                     ticket.setTicketStatus(Ticket.TicketStatus.Open);
                     break;
-                case 2: 
-                    ticket.setTicketStatus(Ticket.TicketStatus.CompletedResolved);  
+                case 2:
+                    ticket.setTicketStatus(Ticket.TicketStatus.CompletedResolved);
                     break;
                 case 3:
                     ticket.setTicketStatus(Ticket.TicketStatus.CompletedUnresolved);
@@ -244,8 +246,19 @@ public class SentinelShield {
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
         String issue = getUserInput("Please input a description of the IT issue: ");
-        String severity = getUserInput("Please input the severity of the issue (Low, Medium, High): ");
-        Ticket createdTicket = new Ticket(issue, severity, "Open", null, currentUser);
+        String severity = "";
+        do {
+            System.out.println("Please input the severity of the issue:");
+            System.out.println("(1) Low");
+            System.out.println("(2) Medium");
+            System.out.println("(3) High");
+            severity = console.nextLine();
+            if (severity.compareTo("1") != 0 && severity.compareTo("2") != 0 && severity.compareTo("3") != 0) {
+                System.out.println("Invalid option, please enter the number of your selection.");
+            }
+        } while (severity.compareTo("1") != 0 && severity.compareTo("2") != 0 && severity.compareTo("3") != 0);
+        Integer severityInt = Integer.parseInt(severity);
+        Ticket createdTicket = new Ticket(issue, severityInt, "Open", currentUser);
         // Assign the ticket to the Service Desk, and therefore user
         serviceDesk.AssignTicket(createdTicket);
     }
@@ -253,7 +266,24 @@ public class SentinelShield {
     // The viewTicketsScreen() method, handles the user interface
     // and communication with the user, for the view tickets screen.
     private void viewTicketsScreen() {
-        // TODO
+        if (currentUser.getIsTechnician()) {
+            // TODO: Display all technicians tickets and allow them to select one to view
+        } else {
+            List<Ticket> tickets = currentUser.getTickets();
+            System.out.println("Your tickets:");
+            for (int i = 0; i < tickets.size(); i++) {
+                if (!tickets.get(i).getIsArchived()) {
+                    System.out.println("Ticket description:");
+                    System.out.println(tickets.get(i).getDescription());
+                    System.out.println("Ticket severity:");
+                    System.out.println(tickets.get(i).getSeverity());
+                    System.out.println("Ticket status:");
+                    System.out.println(tickets.get(i).getTicketStatus());
+                    System.out.println("Date created:");
+                    System.out.println(tickets.get(i).getDateCreated());
+                }
+            }
+        }
     }
 
     // The completeTicketScreen() method, handles the user interface
@@ -272,11 +302,11 @@ public class SentinelShield {
     public void run() {
         // TEST CODE, REMOVE BEFORE SUBMISSION
         users.put("test@test.com", new User("test@test.com", "test", "test",
-                "0412345678", "Test123456789123456789", false));
+                "0412345678", "test", false));
+        serviceDesk.AssignTicket(new Ticket("Test ticket", "Low", "Open", users.get("test")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "High", "Open", users.get("test")));
 
-
-        // TODO - this basically needs to follow Paul's flowchart diagram.
-        // TODO - Potentially add some kind of main menu?
+        // END TEST CODE
         boolean conloop = true;
         while (conloop) {
             // Refresh ticket status every time the menu is returned to
