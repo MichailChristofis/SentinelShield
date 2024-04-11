@@ -302,8 +302,8 @@ public class SentinelShield {
         // TEST CODE, REMOVE BEFORE SUBMISSION
         users.put("test@test.com", new User("test@test.com", "test", "test",
                 "0412345678", "test", false));
-        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test")));
-        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test@test.com")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test@test.com")));
 
         // Just because I'm a sadist doesn't mean I'm a masochist.
         users.put("ss", new User("ss", "SkyService", "SkyService",
