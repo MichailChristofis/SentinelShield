@@ -172,7 +172,7 @@ public class SentinelShield {
             for (Ticket t : currentUser.getTickets()) {
                 tickets.add(t);
                 System.out.printf("%d%30s%10s%15s%n", i, t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(), t.getSeverity(),
-                        t.getDescription());
+                        t.getTicketStatus(), t.getDescription());
                 i++;
             }
             String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
@@ -205,16 +205,18 @@ public class SentinelShield {
         System.out.printf("Description: %s%n", ticket.getDescription());
         int choice = Integer
                 .parseInt(getUserInput(
-                        "Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket, or\n(3) Go back to the technician menu\n",
-                        s -> s.equals("1") || s.equals("2") || s.equals("3"), "Please enter 1, 2, or 3."));
+                        "Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket\n(3) Update the severity of the ticket, or\n(4) Go back to the technician menu\n",
+                        s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"), "Please enter 1, 2, 3 or 4."));
         if (choice == 2) {
             updateTicketStatusMenu(ticket);
             return;
         }
         if (choice == 3) {
+            updateTicketSeverityMenu(ticket);
+        }        
+        if (choice == 4) {
             return;
         }
-        // TODO Edit Ticket @Paul todo
     }
 
     private void updateTicketStatusMenu(Ticket ticket) {
@@ -240,7 +242,31 @@ public class SentinelShield {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
         }
     }
+    
+    private void updateTicketSeverityMenu(Ticket ticket) {
+        // If the ticket isn't archived
+        if (!ticket.getIsArchived()) {
+            int choice = Integer
+                    .parseInt(getUserInput(
+                            "Would you like to set the ticket severity to:\n(1) Low\n(2) Medium, or\n(3) High\n",
+                            s -> s.equals("1") || s.equals("2") || s.equals("3"), "Please enter 1, 2, or 3."));
+            switch (choice) {
+                case 1:
+                    ticket.setSeverity(Ticket.Severity.Low);
+                    break;
+                case 2:
+                    ticket.setSeverity(Ticket.Severity.Medium);
+                    break;
+                case 3:
+                    ticket.setSeverity(Ticket.Severity.High);
+                    break;
+            }
 
+        } else {
+            System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
+        }
+    } 
+    
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {

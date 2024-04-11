@@ -63,31 +63,29 @@ public class Ticket {
     
     //The setTicketStatus method sets the value of the TicketStatus
     //when an integer is used for the constructor
-    private void setTicketStatus(int severity) {
-        if(severity==0) {
-            this.ticketStatus = TicketStatus.valueOf("Low");
-        }
-        else if(severity==1) {
-            this.ticketStatus = TicketStatus.valueOf("Medium");
-        }
-        else if(severity==2) {
-            this.ticketStatus = TicketStatus.valueOf("High");
-        }
-    }
-    
-    //The setSeverity method sets the value of Severity
-    //when an integer is used for the constructor
-    private void setSeverity(int ticketStatus) {
-        if(ticketStatus==0) {
+    private void setTicketStatus(int status) {
+        if(status==0) {
             this.ticketStatus = TicketStatus.valueOf("Open");
         }
-        else if(ticketStatus==1) {
+        else if(status==1) {
             this.ticketStatus = TicketStatus.valueOf("CompletedResolved");
         }
-        else if(ticketStatus==2) {
+        else if(status==2) {
             this.ticketStatus = TicketStatus.valueOf("CompletedUnresolved");
         }
     }
+    
+    private void setTicketSeverity(int severity) {
+        if(severity==0) {
+            this.severity = Severity.valueOf("Low");
+        }
+        else if(severity==1) {
+            this.severity = Severity.valueOf("Medium");
+        }
+        else if(severity==2) {
+            this.severity = Severity.valueOf("High");
+        }
+    }    
     
     public User getCreatedBy() {
         return this.createdBy;
