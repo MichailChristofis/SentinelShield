@@ -171,7 +171,7 @@ public class SentinelShield {
             List<Ticket> tickets = new ArrayList<>();
             for (Ticket t : currentUser.getTickets()) {
                 tickets.add(t);
-                System.out.printf("%d%30s%10s%15s%n", i, t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(), t.getSeverity(),
+                System.out.printf("%d%30s%10s%15s%10%n", i, t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(), t.getSeverity(),
                         t.getTicketStatus(), t.getDescription());
                 i++;
             }
