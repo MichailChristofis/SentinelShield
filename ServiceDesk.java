@@ -25,6 +25,20 @@ public class ServiceDesk {
     // the number of tickets already assigned to each
     // technician.
     public void AssignTicket(Ticket toAssign) {
+        // Before we start, however, keep in mind that although fun, and learning
+        // are the primary goals of all RMIT activities, we must give the user who
+        // created the ticket a copy of the ticket.
+        // Rather than doing this after the ticket is created from the menu system,
+        // I will instead do it here, rendering "AssignTicket" something of a notarization
+        // system for tickets.
+        // This is terrible, by the way, as if ticket ownership is changed, keeping track of 
+        // past and future owners will be laborious, but it makes the features we currently
+        // need to implement rather trivial.
+        // Incidentally, this also means that any user can call AssignTicket, and it won't
+        // necessarily be assigned to them, just to whoever was marked as the creator in 
+        // the ticket's properties.
+        // OH WELL
+        toAssign.getCreatedBy().assignTicket(toAssign);
 
         // First, get the severity
         boolean isHighSeverity = (toAssign.getSeverity() == Ticket.Severity.High);

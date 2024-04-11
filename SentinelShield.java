@@ -260,7 +260,6 @@ public class SentinelShield {
         Ticket createdTicket = new Ticket(issue, severity, currentUser);
         // Assign the ticket to the Service Desk, and therefore user
         serviceDesk.AssignTicket(createdTicket);
-        currentUser.assignTicket(createdTicket);
     }
 
     // The viewTicketsScreen() method, handles the user interface
@@ -305,6 +304,12 @@ public class SentinelShield {
                 "0412345678", "test", false));
         serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test")));
         serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test")));
+
+        // Just because I'm a sadist doesn't mean I'm a masochist.
+        users.put("ss", new User("ss", "SkyService", "SkyService",
+            "0", "ss", false));
+        users.put("st", new User("st", "SkyTech", "SkyTech",
+            "0", "st", true));
 
         // END TEST CODE
         boolean conloop = true;
