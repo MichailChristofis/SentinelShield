@@ -207,17 +207,17 @@ public class SentinelShield {
         System.out.printf("Description: %s%n", ticket.getDescription());
         int choice = Integer
                 .parseInt(getUserInput(
-                        "Would you like to:\n(1) Edit this ticket\n(2) Update the status of this ticket\n(3) Update the severity of the ticket, or\n(4) Go back to the technician menu\n",
+                        "Would you like to:\n(1) Update the status of this ticket\n(2) Update the severity of the ticket, or\n(3) Go back to the technician menu\n",
                         s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
                         "Please enter 1, 2, 3 or 4."));
-        if (choice == 2) {
+        if (choice == 1) {
             updateTicketStatusMenu(ticket);
             return;
         }
-        if (choice == 3) {
+        if (choice == 2) {
             updateTicketSeverityMenu(ticket);
         }
-        if (choice == 4) {
+        if (choice == 3) {
             return;
         }
     }
