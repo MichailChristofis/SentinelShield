@@ -6,6 +6,9 @@
 
 import java.util.Scanner;
 import java.util.function.Predicate;
+
+import Ticket.TicketStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,7 +171,7 @@ public class SentinelShield {
         while (true) {
             // We only need to display a technician's own tickets here
             String choice = getUserInput(
-                    "Do you want to view your assigned tickets (1), all tickets (2), or logout (3)?  ",
+                    "Do you want to view your assigned tickets (1), all closed or archived tickets (2), or logout (3)?  ",
                     s -> s.equals("1") || s.equals("2") || s.equals("3"), "Please enter 1, 2, or 3.");
             List<Ticket> tickets = new ArrayList<>();
             if (choice.equals("3")) {
@@ -186,11 +189,32 @@ public class SentinelShield {
                             t.getTicketStatus(), t.getDescription());
                     i++;
                 }
+                String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
+                choice = getUserInput(prompt, s -> {
+                    if (s.toLowerCase().equals("q")) {
+                        return true;
+                    }
+                    try {
+                        Integer.parseInt(s);
+                        return true;
+                    } catch (NumberFormatException _e) {
+                        return false;
+                    }
+                }, prompt);
+                if (!choice.toLowerCase().equals("q")) {
+                    int ticketNo = Integer.parseInt(choice);
+                    if (ticketNo > tickets.size() || ticketNo <= 0) {
+                        System.out.println("Please choose a valid ticket number.");
+                    }
+                    techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
+                }
             } else {
-                System.out.println("All Tickets: ");
+                System.out.println("All Closed and Archived Tickets: ");
                 int i = 1;
                 for (User u : users.values()) {
                     for (Ticket t : u.getTickets()) {
+                        if (t.getTicketStatus() == Ticket.TicketStatus.Open)
+                            continue;
                         tickets.add(t);
                         System.out.printf("%-3d%-30s%-10s%-15s%n", i,
                                 t.getAssignedTechnician().getFirstName() + " "
@@ -200,25 +224,6 @@ public class SentinelShield {
                         i++;
                     }
                 }
-            }
-            String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
-            choice = getUserInput(prompt, s -> {
-                if (s.toLowerCase().equals("q")) {
-                    return true;
-                }
-                try {
-                    Integer.parseInt(s);
-                    return true;
-                } catch (NumberFormatException _e) {
-                    return false;
-                }
-            }, prompt);
-            if (!choice.toLowerCase().equals("q")) {
-                int ticketNo = Integer.parseInt(choice);
-                if (ticketNo > tickets.size() || ticketNo <= 0) {
-                    System.out.println("Please choose a valid ticket number.");
-                }
-                techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
             }
         }
 
