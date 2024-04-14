@@ -169,7 +169,7 @@ public class SentinelShield {
             // We only need to display a technician's own tickets here
             String choice = getUserInput(
                     "Do you want to view your assigned tickets (1), all tickets (2), or logout (3)?  ",
-                    s -> s.equals("1") || s.equals("2"), "Please enter 1, 2, or 3.");
+                    s -> s.equals("1") || s.equals("2") || s.equals("3"), "Please enter 1, 2, or 3.");
             List<Ticket> tickets = new ArrayList<>();
             if (choice.equals("3")) {
                 return;
