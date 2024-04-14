@@ -3,7 +3,6 @@
 
 import java.time.LocalDate;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Ticket {
@@ -35,58 +34,57 @@ public class Ticket {
     // The Ticket() method is a constructor for the Ticket class.
     public Ticket(String description, String severity, User creator) {
         setValue(description, creator);
-        if (severity.compareTo("1") == 0){
+        if (severity.compareTo("1") == 0) {
             this.severity = Severity.Low;
-        } else if (severity.compareTo("2") == 0){
+        } else if (severity.compareTo("2") == 0) {
             this.severity = Severity.Medium;
-        } else if (severity.compareTo("3") == 0){
+        } else if (severity.compareTo("3") == 0) {
             this.severity = Severity.High;
         } else {
             this.severity = null;
         }
         this.ticketStatus = TicketStatus.Open;
     }
-    
-    //The setValue method, sets the values for the constructors
-    //so as to avoid code repetition.
+
+    // The setValue method, sets the values for the constructors
+    // so as to avoid code repetition.
     private void setValue(String description, User creator) {
-    	this.description = description;
-        // There is no date completed because we are just creating the ticket now, rather than accepting strings,
-        // Please accept a Date, forcing the caller to either conform the date themselves, or pass null
-        // this.dateCompleted = LocalDate.parse(dateCompleted, DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
+        this.description = description;
+        // There is no date completed because we are just creating the ticket now,
+        // rather than accepting strings,
+        // Please accept a Date, forcing the caller to either conform the date
+        // themselves, or pass null
+        // this.dateCompleted = LocalDate.parse(dateCompleted,
+        // DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
         // Placeholder:
         this.dateCompleted = null;
         this.createdBy = creator;
         this.assignedTechnician = null;
-        this.dateCreated=LocalDate.now();
+        this.dateCreated = LocalDate.now();
     }
-    
-    //The setTicketStatus method sets the value of the TicketStatus
-    //when an integer is used for the constructor
+
+    // The setTicketStatus method sets the value of the TicketStatus
+    // when an integer is used for the constructor
     private void setTicketStatus(int status) {
-        if(status==0) {
+        if (status == 0) {
             this.ticketStatus = TicketStatus.valueOf("Open");
-        }
-        else if(status==1) {
+        } else if (status == 1) {
             this.ticketStatus = TicketStatus.valueOf("CompletedResolved");
-        }
-        else if(status==2) {
+        } else if (status == 2) {
             this.ticketStatus = TicketStatus.valueOf("CompletedUnresolved");
         }
     }
-    
+
     private void setTicketSeverity(int severity) {
-        if(severity==0) {
+        if (severity == 0) {
             this.severity = Severity.valueOf("Low");
-        }
-        else if(severity==1) {
+        } else if (severity == 1) {
             this.severity = Severity.valueOf("Medium");
-        }
-        else if(severity==2) {
+        } else if (severity == 2) {
             this.severity = Severity.valueOf("High");
         }
-    }    
-    
+    }
+
     public User getCreatedBy() {
         return this.createdBy;
     }
@@ -111,17 +109,19 @@ public class Ticket {
 
     // The setSeverity() method is a setter method,
     // for the ticket's severity.
-    public void setSeverity(Severity severity) {        
+    public void setSeverity(Severity severity) {
         this.severity = severity;
     }
     // Todo: Once this is called from the menu, execute relevant code:
-    // It could be placed in the setter however Ticket holds no reference to ServiceDesk
+    // It could be placed in the setter however Ticket holds no reference to
+    // ServiceDesk
     /*
-    // Check if we need to reassign
-    if ((this.severity == Severity.High) && (severity != Severity.High) || (this.severity != Severity.High) && (severity == Severity.High)) {
-        serviceDesk.AssignTicket(createdTicket);        
-    }
-    */
+     * // Check if we need to reassign
+     * if ((this.severity == Severity.High) && (severity != Severity.High) ||
+     * (this.severity != Severity.High) && (severity == Severity.High)) {
+     * serviceDesk.AssignTicket(createdTicket);
+     * }
+     */
 
     // The getTicketStatus() method is a getter method,
     // for the ticket's status.
@@ -132,14 +132,16 @@ public class Ticket {
     // The setTicketStatus() method is a setter method,
     // for the ticket's status.
     public void setTicketStatus(TicketStatus ticketStatus) {
-        this.ticketStatus = ticketStatus;        
+        this.ticketStatus = ticketStatus;
         refreshTicketStatus();
     }
 
-    // We're not using this.dateCompleted because that may be managed and changed externally
+    // We're not using this.dateCompleted because that may be managed and changed
+    // externally
     private Instant timeMarkedCompleted;
+
     // Automatically archive ticket if marked complete over 24 hours ago
-    public void refreshTicketStatus(){
+    public void refreshTicketStatus() {
         // Make sure the ticket hasn't been marked Open, otherwise ignore the call
         if (this.ticketStatus == TicketStatus.Open) {
             timeMarkedCompleted = null;
@@ -149,7 +151,8 @@ public class Ticket {
             // Bail out
             return;
         }
-        // We have a valid ticketStatus that isn't open, check if we already have a valid time,
+        // We have a valid ticketStatus that isn't open, check if we already have a
+        // valid time,
         // and if not, update it now:
         if (timeMarkedCompleted == null) {
             timeMarkedCompleted = Instant.now();
@@ -172,7 +175,7 @@ public class Ticket {
     public void setDateCompleted(LocalDate dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
-    
+
     // The getDateCreated() method is a getter method,
     // for the ticket's date.
     public LocalDate getDateCreated() {
@@ -196,21 +199,21 @@ public class Ticket {
     public void setIsArchived(boolean isArchived) {
         this.archived = isArchived;
     }
-    
-    //The getAssignedTechnician method is a getter method
-    //for the assigned technician.
+
+    // The getAssignedTechnician method is a getter method
+    // for the assigned technician.
     public User getAssignedTechnician() {
-    	return this.assignedTechnician;
+        return this.assignedTechnician;
     }
-    
-    //The setAssignedTechnician method is a setter method
-    //for the assigned technician
+
+    // The setAssignedTechnician method is a setter method
+    // for the assigned technician
     public void setAssignedTechnician(User assignedTechnician) {
-    	this.assignedTechnician=assignedTechnician;
+        this.assignedTechnician = assignedTechnician;
     }
-    
-    //The AssignTicket method is used to assign a ticket
-    //to a particular technician.
+
+    // The AssignTicket method is used to assign a ticket
+    // to a particular technician.
     public void AssignTicket(User assignTo) {
         this.assignedTechnician = assignTo;
         assignTo.assignTicket(this);

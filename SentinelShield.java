@@ -7,8 +7,6 @@
 import java.util.Scanner;
 import java.util.function.Predicate;
 
-import Ticket.TicketStatus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
