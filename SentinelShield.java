@@ -162,23 +162,47 @@ public class SentinelShield {
 
     private void viewTechMenu() {
         // Loop until the function returns
+        // Refresh ticket status every time the menu is returned to
+        serviceDesk.automaticallyRefreshTickets();
+        System.out.println("Welcome, " + currentUser.getFirstName() + ".");
         while (true) {
-            // Refresh ticket status every time the menu is returned to
-            serviceDesk.automaticallyRefreshTickets();
-            System.out.println("Welcome, " + currentUser.getFirstName() + ".");
             // We only need to display a technician's own tickets here
-            int i = 1;
+            String choice = getUserInput(
+                    "Do you want to view your assigned tickets (1), all tickets (2), or logout (3)?  ",
+                    s -> s.equals("1") || s.equals("2"), "Please enter 1, 2, or 3.");
             List<Ticket> tickets = new ArrayList<>();
-            for (Ticket t : currentUser.getTickets()) {
-                tickets.add(t);
-                System.out.printf("%-3d%-30s%-10s%-15s%n", i,
-                        t.getAssignedTechnician().getFirstName() + " " + t.getAssignedTechnician().getLastName(),
-                        t.getSeverity(),
-                        t.getTicketStatus(), t.getDescription());
-                i++;
+            if (choice.equals("3")) {
+                return;
+            }
+            if (choice.equals("1")) {
+                System.out.println("Your Tickets: ");
+                int i = 1;
+                for (Ticket t : currentUser.getTickets()) {
+                    tickets.add(t);
+                    System.out.printf("%-3d%-30s%-10s%-15s%n", i,
+                            t.getAssignedTechnician().getFirstName() + " "
+                                    + t.getAssignedTechnician().getLastName(),
+                            t.getSeverity(),
+                            t.getTicketStatus(), t.getDescription());
+                    i++;
+                }
+            } else {
+                System.out.println("All Tickets: ");
+                int i = 1;
+                for (User u : users.values()) {
+                    for (Ticket t : u.getTickets()) {
+                        tickets.add(t);
+                        System.out.printf("%-3d%-30s%-10s%-15s%n", i,
+                                t.getAssignedTechnician().getFirstName() + " "
+                                        + t.getAssignedTechnician().getLastName(),
+                                t.getSeverity(),
+                                t.getTicketStatus(), t.getDescription());
+                        i++;
+                    }
+                }
             }
             String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
-            String choice = getUserInput(prompt, s -> {
+            choice = getUserInput(prompt, s -> {
                 if (s.toLowerCase().equals("q")) {
                     return true;
                 }
@@ -189,9 +213,7 @@ public class SentinelShield {
                     return false;
                 }
             }, prompt);
-            if (choice.toLowerCase().equals("q")) {
-                return;
-            } else {
+            if (!choice.toLowerCase().equals("q")) {
                 int ticketNo = Integer.parseInt(choice);
                 if (ticketNo > tickets.size() || ticketNo <= 0) {
                     System.out.println("Please choose a valid ticket number.");
