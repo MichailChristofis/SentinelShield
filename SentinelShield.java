@@ -136,7 +136,7 @@ public class SentinelShield {
         String menuString = "Please make a selection from the options below:\n"
                 + "(1) Create a new ticket\n"
                 + "(2) View your tickets\n"
-                + "(3) Exit\n";
+                + "(3) Logout\n";
         String userinputeString = "";
         while (conloop) {
             // Refresh ticket status every time the menu is returned to
@@ -173,6 +173,9 @@ public class SentinelShield {
                 System.out.println("Your Tickets: ");
                 int i = 1;
                 for (Ticket t : currentUser.getTickets()) {
+                    if (t.getTicketStatus() != Ticket.TicketStatus.Open) {
+                        continue;
+                    }
                     tickets.add(t);
                     System.out.printf("%-3d%-30s%-10s%-15s%n", i,
                             t.getAssignedTechnician().getFirstName() + " "
@@ -223,7 +226,7 @@ public class SentinelShield {
 
     private void techViewIndividualTicketScreen(Ticket ticket) {
         System.out.printf("Author: %s%n",
-                ticket.getCreatedBy().getFirstName() + ticket.getCreatedBy().getLastName());
+                ticket.getCreatedBy().getFirstName() + " " + ticket.getCreatedBy().getLastName());
         System.out.printf("Severity: %s%n", ticket.getSeverity());
         System.out.printf("Status: %s%n", ticket.getTicketStatus());
         System.out.printf("Description: %s%n", ticket.getDescription());
@@ -320,9 +323,12 @@ public class SentinelShield {
         } else {
             List<Ticket> tickets = currentUser.getTickets();
             System.out.println("Your tickets:");
+            if (tickets.size() == 0) {
+                System.out.println("You don't have any tickets at the moment.");
+            }
             for (int i = 0; i < tickets.size(); i++) {
                 if (!tickets.get(i).getIsArchived()) {
-                    System.out.print("Ticket description  :");
+                    System.out.print("---\nTicket description  :");
                     System.out.println(tickets.get(i).getDescription());
                     System.out.print("Ticket severity:  ");
                     System.out.println(tickets.get(i).getSeverity());
@@ -330,6 +336,7 @@ public class SentinelShield {
                     System.out.println(tickets.get(i).getTicketStatus());
                     System.out.print("Date created:  ");
                     System.out.println(tickets.get(i).getDateCreated());
+                    System.out.println("---");
                 }
             }
         }
@@ -370,7 +377,7 @@ public class SentinelShield {
                 System.out.println("(1) Signup");
                 System.out.println("(2) Login");
                 System.out.println("(3) Forgot Password");
-                System.out.println("(4) Exit");
+                System.out.println("(4) Exit Program");
                 input = console.nextLine();
                 if (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0
                         && input.compareTo("4") != 0) {
