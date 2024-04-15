@@ -126,13 +126,7 @@ public class SentinelShield {
                 "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
                 s -> s.matches(PASSWORD_REGEX),
                 "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit.");
-        boolean confirmation = getUserInput(
-                "Confirm adding a new user with the information you just added (Y/N): ",
-                s -> s.toLowerCase().equals("y") || s.toLowerCase().equals("n"), "Please enter 'Y' or 'N': ")
-                .toLowerCase().equals("y");
-        if (confirmation) {
-            users.put(email, new User(email, firstName, lastName, phone, password, false));
-        }
+        users.put(email, new User(email, firstName, lastName, phone, password, false));
     }
 
     // The signupScreen() method, handles the user interface

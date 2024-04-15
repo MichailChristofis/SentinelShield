@@ -4,8 +4,6 @@
 // to each technician
 
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.List;
 
 // import Ticket;
@@ -29,13 +27,17 @@ public class ServiceDesk {
         // are the primary goals of all RMIT activities, we must give the user who
         // created the ticket a copy of the ticket.
         // Rather than doing this after the ticket is created from the menu system,
-        // I will instead do it here, rendering "AssignTicket" something of a notarization
+        // I will instead do it here, rendering "AssignTicket" something of a
+        // notarization
         // system for tickets.
-        // This is terrible, by the way, as if ticket ownership is changed, keeping track of 
-        // past and future owners will be laborious, but it makes the features we currently
+        // This is terrible, by the way, as if ticket ownership is changed, keeping
+        // track of
+        // past and future owners will be laborious, but it makes the features we
+        // currently
         // need to implement rather trivial.
-        // Incidentally, this also means that any user can call AssignTicket, and it won't
-        // necessarily be assigned to them, just to whoever was marked as the creator in 
+        // Incidentally, this also means that any user can call AssignTicket, and it
+        // won't
+        // necessarily be assigned to them, just to whoever was marked as the creator in
         // the ticket's properties.
         // OH WELL
         toAssign.getCreatedBy().assignTicket(toAssign);
@@ -81,7 +83,8 @@ public class ServiceDesk {
         return topTechnician;
     }
 
-    // Refresh ticket status to automatically archive after 24 hours, per Sprint 2 9.1
+    // Refresh ticket status to automatically archive after 24 hours, per Sprint 2
+    // 9.1
     public void automaticallyRefreshTickets() {
         // The tickets are stored in the technician
         // So process everything for each technician
