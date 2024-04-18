@@ -185,7 +185,7 @@ public class Ticket {
     // The setDateCreated() method is a setter method,
     // for the ticket's date.
     public void setDateCreated(LocalDate dateCreated) {
-        this.dateCompleted = dateCreated;
+        this.dateCreated = dateCreated;
     }
 
     // The getIsArchived() method is a getter method,
