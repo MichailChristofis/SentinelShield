@@ -5,6 +5,7 @@
 
 import java.util.Random;
 import java.util.List;
+import java.util.ArrayList;
 
 // import Ticket;
 
@@ -107,5 +108,30 @@ public class ServiceDesk {
                 ticket.refreshTicketStatus();
             }
         }
+    }
+
+    public ArrayList<Ticket> returnAllTickets() {
+        ArrayList<Ticket> allTickets = new ArrayList<Ticket>();
+
+        for (User technician : techniciansLevel1) {
+            List<Ticket> tickets = technician.getTickets();
+            // For every ticket
+            for (Ticket ticket : tickets) {
+                // add to the list
+                allTickets.add(ticket);
+            }
+        }
+
+        // Getting my LoC count up
+        for (User technician : techniciansLevel1) {
+            List<Ticket> tickets = technician.getTickets();
+            // For every ticket
+            for (Ticket ticket : tickets) {
+                // add to the list
+                allTickets.add(ticket);
+            }
+        }
+
+        return allTickets;
     }
 }

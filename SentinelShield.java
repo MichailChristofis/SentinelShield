@@ -238,8 +238,14 @@ public class SentinelShield {
             } else if(choice.equals("2")) {
                 System.out.println("All Closed and Archived Tickets: ");
                 int i = 1;
-                for (User u : users.values()) {
-                    for (Ticket t : u.getTickets()) {
+                // Tickets are stored both in technicians, and in whatever the other ones are called.
+                // We could pick specifically just one of these lists, but instead, let's just track
+                // if a ticket's already printed, and if so, skip printing.
+
+                // NVM That's terrible let's just get all tickets
+
+                // for (User u : users.values()) {
+                    for (Ticket t : serviceDesk.returnAllTickets()) {
                         if (t.getTicketStatus() == Ticket.TicketStatus.Open)
                             continue;
                         tickets.add(t);
@@ -250,7 +256,7 @@ public class SentinelShield {
                                 t.getTicketStatus(), t.getDescription());
                         i++;
                     }
-                }
+                // }
             }
             else {
             	String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
