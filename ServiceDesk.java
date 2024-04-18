@@ -57,7 +57,7 @@ public class ServiceDesk {
         // Now chose a specific user to assign to
         User targetUser = PickUserForTicket(targetServiceDesk);
         toAssign.AssignTicket(targetUser);
-        // System.out.println("Assigning ticket to technician " + targetUser.getFirstName());
+        System.out.println("Assigning ticket to technician " + targetUser.getFirstName());
     }
 
     private User PickUserForTicket(User[] technicianList) {

@@ -407,7 +407,7 @@ public class SentinelShield {
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
-        String issue = getUserInput("Please input a description of the IT issue: ");
+        String issue = getUserInput("Please input a description of the IT issue: \n");
         String severity = "";
         do {
             System.out.println("Please input the severity of the issue:");
