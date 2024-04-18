@@ -177,6 +177,7 @@ public class SentinelShield {
                 Author:       %s
                 Created:      %s
                 Severity:     %s
+                Status:       %s
                 Technician:   %s
                 Time Active:  %s
                 ----------------------------
@@ -184,7 +185,8 @@ public class SentinelShield {
         System.out.printf(formatString,
                 ticketToPrint.getCreatedBy().getFirstName() + " " + ticketToPrint.getCreatedBy().getLastName(),
                 ticketToPrint.getDateCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                ticketToPrint.getSeverity().name() + " " + ticketToPrint.getTicketStatus().name(),
+                ticketToPrint.getSeverity().name(),
+                ticketToPrint.getTicketStatus().name(),
                 ticketToPrint.getAssignedTechnician().getFirstName() + " "
                         + ticketToPrint.getAssignedTechnician().getLastName(),
                 ticketToPrint.getTicketStatus().name().equals("Open") ? "N/A"
