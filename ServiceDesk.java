@@ -57,7 +57,7 @@ public class ServiceDesk {
         // Now chose a specific user to assign to
         User targetUser = PickUserForTicket(targetServiceDesk);
         toAssign.AssignTicket(targetUser);
-        System.out.println("ASSIGNING TO " + targetUser.getFirstName());
+        // System.out.println("Assigning ticket to technician " + targetUser.getFirstName());
     }
 
     private User PickUserForTicket(User[] technicianList) {
@@ -123,7 +123,7 @@ public class ServiceDesk {
         }
 
         // Getting my LoC count up
-        for (User technician : techniciansLevel1) {
+        for (User technician : techniciansLevel2) {
             List<Ticket> tickets = technician.getTickets();
             // For every ticket
             for (Ticket ticket : tickets) {
