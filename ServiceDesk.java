@@ -5,6 +5,7 @@
 
 import java.util.Random;
 import java.util.List;
+import java.util.ArrayList;
 
 // import Ticket;
 
@@ -22,7 +23,7 @@ public class ServiceDesk {
     // appropriate technician, based on its severity, and
     // the number of tickets already assigned to each
     // technician.
-    public void AssignTicket(Ticket toAssign) {
+    public void AssignTicket(Ticket toAssign, boolean reassign) {
         // Before we start, however, keep in mind that although fun, and learning
         // are the primary goals of all RMIT activities, we must give the user who
         // created the ticket a copy of the ticket.
@@ -40,7 +41,11 @@ public class ServiceDesk {
         // necessarily be assigned to them, just to whoever was marked as the creator in
         // the ticket's properties.
         // OH WELL
-        toAssign.getCreatedBy().assignTicket(toAssign);
+        
+        // If we're not reassigning, then no need to assign it to the creator again
+        if (!reassign) {
+            toAssign.getCreatedBy().assignTicket(toAssign);
+        }
 
         // First, get the severity
         boolean isHighSeverity = (toAssign.getSeverity() == Ticket.Severity.High);
@@ -52,6 +57,7 @@ public class ServiceDesk {
         // Now chose a specific user to assign to
         User targetUser = PickUserForTicket(targetServiceDesk);
         toAssign.AssignTicket(targetUser);
+        System.out.println("Assigning ticket to technician " + targetUser.getFirstName());
     }
 
     private User PickUserForTicket(User[] technicianList) {
@@ -102,5 +108,30 @@ public class ServiceDesk {
                 ticket.refreshTicketStatus();
             }
         }
+    }
+
+    public ArrayList<Ticket> returnAllTickets() {
+        ArrayList<Ticket> allTickets = new ArrayList<Ticket>();
+
+        for (User technician : techniciansLevel1) {
+            List<Ticket> tickets = technician.getTickets();
+            // For every ticket
+            for (Ticket ticket : tickets) {
+                // add to the list
+                allTickets.add(ticket);
+            }
+        }
+
+        // Getting my LoC count up
+        for (User technician : techniciansLevel2) {
+            List<Ticket> tickets = technician.getTickets();
+            // For every ticket
+            for (Ticket ticket : tickets) {
+                // add to the list
+                allTickets.add(ticket);
+            }
+        }
+
+        return allTickets;
     }
 }

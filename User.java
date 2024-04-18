@@ -104,7 +104,20 @@ public class User {
         tickets.add(ticket);
     }
     public void forgetTicket(Ticket forgetMe) {
+
+        // TICKETS BEFORE REMOVE
+        // System.out.println("// TICKETS BEFORE REMOVE");
+        for (Ticket ticket : tickets) {
+            // System.out.println("Ticket: " + ticket.getDescription());
+        }
+
         tickets.removeIf(e -> e.getUUID().equals(forgetMe.getUUID()));
+
+        // TICKETS AFTER REMOVE
+        // System.out.println("// TICKETS AFTER REMOVE");
+        for (Ticket ticket : tickets) {
+            // System.out.println("Ticket: " + ticket.getDescription());
+        }
     }
 
 }

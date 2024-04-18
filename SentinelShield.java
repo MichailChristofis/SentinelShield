@@ -247,8 +247,14 @@ public class SentinelShield {
             } else if (choice.equals("2")) {
                 System.out.println("All Closed and Archived Tickets: ");
                 int i = 1;
-                for (User u : users.values()) {
-                    for (Ticket t : u.getTickets()) {
+                // Tickets are stored both in technicians, and in whatever the other ones are called.
+                // We could pick specifically just one of these lists, but instead, let's just track
+                // if a ticket's already printed, and if so, skip printing.
+
+                // NVM That's terrible let's just get all tickets
+
+                // for (User u : users.values()) {
+                    for (Ticket t : serviceDesk.returnAllTickets()) {
                         if (t.getTicketStatus() == Ticket.TicketStatus.Open)
                             continue;
                         tickets.add(t);
@@ -259,7 +265,7 @@ public class SentinelShield {
                                 t.getTicketStatus(), t.getDescription());
                         i++;
                     }
-                }
+                // }
             } else {
                 String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
                 String invalidPrompt = "Invalid date, please select beginning date of filter (dd/mm/yyyy): ";
@@ -330,7 +336,6 @@ public class SentinelShield {
                 }
             }
         }
-
     }
 
     private void techViewIndividualTicketScreen(Ticket ticket) {
@@ -400,6 +405,8 @@ public class SentinelShield {
                     ticket.setSeverity(Ticket.Severity.High);
                     break;
             }
+            ticket.getAssignedTechnician().forgetTicket(ticket);
+            serviceDesk.AssignTicket(ticket, true);
 
         } else {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
@@ -409,7 +416,7 @@ public class SentinelShield {
     // The createTicketScreen() method, handles the user interface
     // and communication with the user, for the create ticket screen.
     private void createTicketScreen() {
-        String issue = getUserInput("Please input a description of the IT issue: ");
+        String issue = getUserInput("Please input a description of the IT issue: \n");
         String severity = "";
         do {
             System.out.println("Please input the severity of the issue:");
@@ -423,7 +430,7 @@ public class SentinelShield {
         } while (severity.compareTo("1") != 0 && severity.compareTo("2") != 0 && severity.compareTo("3") != 0);
         Ticket createdTicket = new Ticket(issue, severity, currentUser);
         // Assign the ticket to the Service Desk, and therefore user
-        serviceDesk.AssignTicket(createdTicket);
+        serviceDesk.AssignTicket(createdTicket, false);
     }
 
     // The viewTicketsScreen() method, handles the user interface
@@ -439,7 +446,7 @@ public class SentinelShield {
             }
             for (int i = 0; i < tickets.size(); i++) {
                 if (!tickets.get(i).getIsArchived()) {
-                    System.out.print("---\nTicket description  :");
+                    System.out.print("---\nTicket description:  ");
                     System.out.println(tickets.get(i).getDescription());
                     System.out.print("Ticket severity:  ");
                     System.out.println(tickets.get(i).getSeverity());
@@ -470,8 +477,8 @@ public class SentinelShield {
         // TEST CODE, REMOVE BEFORE SUBMISSION
         users.put("test@test.com", new User("test@test.com", "test", "test",
                 "0412345678", "test", false));
-        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test@test.com")));
-        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test@test.com")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test@test.com")), false);
+        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test@test.com")),false);
 
         // Just because I'm a sadist doesn't mean I'm a masochist.
         users.put("ss", new User("ss", "SkyService", "SkyService",
