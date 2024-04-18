@@ -162,31 +162,37 @@ public class SentinelShield {
             }
         }
     }
-    
-    //The daysBetween() method, calculates how many days
-    //there are between two dates
+
+    // The daysBetween() method, calculates how many days
+    // there are between two dates
     private long daysBetween(LocalDate date1, LocalDate date2) {
         return Math.abs(ChronoUnit.DAYS.between(date1, date2)) + 1;
     }
 
-    //The printTicketDetails() method, prints a ticket's
-    //details, as per the specification
+    // The printTicketDetails() method, prints a ticket's
+    // details, as per the specification
     private void printTicketDetails(Ticket ticketToPrint) {
-    	String toPrint=ticketToPrint.getCreatedBy().getFirstName()+" "+ticketToPrint.getCreatedBy().getLastName();
-    	toPrint+=" "+ticketToPrint.getDateCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    	toPrint+=" "+ticketToPrint.getSeverity().name()+" "+ticketToPrint.getTicketStatus().name();
-    	toPrint+=" "+ticketToPrint.getAssignedTechnician().getFirstName()+" "+ticketToPrint.getAssignedTechnician().getLastName();
-    	if(ticketToPrint.getTicketStatus().name().equals("CompletedResolved") || ticketToPrint.getTicketStatus().name().equals("CompletedUnresolved")) {
-    		toPrint+=" "+daysBetween(ticketToPrint.getDateCreated(), ticketToPrint.getDateCompleted());
-    	}
-    	else {
-    		toPrint+=" N/A";
-    	}
-    	System.out.println(toPrint);
+        String formatString = """
+                ----------------------------
+                Author:       %s
+                Created:      %s
+                Severity:     %s
+                Technician:   %s
+                Time Active:  %s
+                ----------------------------
+                """;
+        System.out.printf(formatString,
+                ticketToPrint.getCreatedBy().getFirstName() + " " + ticketToPrint.getCreatedBy().getLastName(),
+                ticketToPrint.getDateCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                ticketToPrint.getSeverity().name() + " " + ticketToPrint.getTicketStatus().name(),
+                ticketToPrint.getAssignedTechnician().getFirstName() + " "
+                        + ticketToPrint.getAssignedTechnician().getLastName(),
+                ticketToPrint.getTicketStatus().name().equals("Open") ? "N/A"
+                        : daysBetween(ticketToPrint.getDateCreated(), ticketToPrint.getDateCompleted()));
     }
-    
-    //The viewTechMenu() method displays the tech's menu
-    //and handles their selections
+
+    // The viewTechMenu() method displays the tech's menu
+    // and handles their selections
     private void viewTechMenu() {
         // Loop until the function returns
         // Refresh ticket status every time the menu is returned to
@@ -196,7 +202,8 @@ public class SentinelShield {
             // We only need to display a technician's own tickets here
             String choice = getUserInput(
                     "Do you want to view your assigned tickets (1), all closed or archived tickets (2), sort tickets by period (3) or logout (4)?  ",
-                    s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"), "Please enter 1, 2, 3 or 4.");
+                    s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
+                    "Please enter 1, 2, 3 or 4.");
             List<Ticket> tickets = new ArrayList<>();
             if (choice.equals("4")) {
                 return;
@@ -235,7 +242,7 @@ public class SentinelShield {
                     }
                     techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
                 }
-            } else if(choice.equals("2")) {
+            } else if (choice.equals("2")) {
                 System.out.println("All Closed and Archived Tickets: ");
                 int i = 1;
                 for (User u : users.values()) {
@@ -251,75 +258,74 @@ public class SentinelShield {
                         i++;
                     }
                 }
-            }
-            else {
-            	String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
-            	String invalidPrompt = "Invalid date, please select beginning date of filter (dd/mm/yyyy): ";
-            	//Check if start date is well formatted
-            	getUserInput(prompt, s->{
-            		SimpleDateFormat sdfrmt = new SimpleDateFormat("dd/MM/yyyy");
-            		sdfrmt.setLenient(false);
-            		try {
-            			startDate = sdfrmt.parse(s);
-            			return true;
-            		}
-            		catch(ParseException e) {
-            			return false;
-            		}
-            	}, invalidPrompt);
-            	prompt = "Please select end date of filter (dd/mm/yyyy): ";
-            	invalidPrompt = "Invalid date, please select end date of filter (dd/mm/yyyy): ";
-            	//Check if end date is well formatted
-            	getUserInput(prompt, s->{
-            		SimpleDateFormat sdfrmt = new SimpleDateFormat("dd/MM/yyyy");
-            		sdfrmt.setLenient(false);
-            		try {
-            	        endDate = sdfrmt.parse(s);
-            			LocalDate sDate=startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            			LocalDate eDate=endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            			if(sDate.isBefore(eDate) || sDate.equals(eDate)) {
-            				return true;
-            			}
-            			else {
-            				return false;
-            			}
-            		}
-            		catch(ParseException e) {
-            			return false;
-            		}
-            	}, invalidPrompt);
-            	ArrayList<Ticket> ticketsSelected = new ArrayList<Ticket>();
-            	int countOpen=0, countResolved=0, countUnresolved=0;
-            	for(Map.Entry<String, User> mapElement:users.entrySet()) {
-            		User value=mapElement.getValue();
-            		List<Ticket> userTickets = value.getTickets();
-            		if(value.getIsTechnician()==true) {
-	            		for(Ticket userTicket : userTickets) {
-	            			LocalDate sDate=startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	            			LocalDate eDate=endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	            			if((userTicket.getDateCreated().isAfter(sDate) && userTicket.getDateCreated().isBefore(eDate)) || userTicket.getDateCreated().isEqual(sDate) || userTicket.getDateCreated().isEqual(eDate)) {
-	            				ticketsSelected.add(userTicket);
-	            				if(userTicket.getTicketStatus().name().equals("Open")) {
-	            					countOpen++;
-	            				}
-	            				if(userTicket.getTicketStatus().name().equals("CompletedResolved")) {
-	            					countResolved++;
-	            				}
-	            				if(userTicket.getTicketStatus().name().equals("CompletedUnresolved")) {
-	            					countUnresolved++;
-	            				}
-	            			}
-	            		}
-            		}
-            	}
-            	//Print results
-            	System.out.println("Tickets submitted: " + ticketsSelected.size());
-            	System.out.println("Tickets open: " + countOpen);
-            	System.out.println("Tickets resolved: " + countResolved);
-            	System.out.println("Tickets unresolved: " + countUnresolved);
-            	for(int i=0; i<ticketsSelected.size(); i++) {
-            		printTicketDetails(ticketsSelected.get(i));
-            	}
+            } else {
+                String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
+                String invalidPrompt = "Invalid date, please select beginning date of filter (dd/mm/yyyy): ";
+                // Check if start date is well formatted
+                getUserInput(prompt, s -> {
+                    SimpleDateFormat sdfrmt = new SimpleDateFormat("dd/MM/yyyy");
+                    sdfrmt.setLenient(false);
+                    try {
+                        startDate = sdfrmt.parse(s);
+                        return true;
+                    } catch (ParseException e) {
+                        return false;
+                    }
+                }, invalidPrompt);
+                prompt = "Please select end date of filter (dd/mm/yyyy): ";
+                invalidPrompt = "Invalid date, please select end date of filter (dd/mm/yyyy): ";
+                // Check if end date is well formatted
+                getUserInput(prompt, s -> {
+                    SimpleDateFormat sdfrmt = new SimpleDateFormat("dd/MM/yyyy");
+                    sdfrmt.setLenient(false);
+                    try {
+                        endDate = sdfrmt.parse(s);
+                        LocalDate sDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        LocalDate eDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        if (sDate.isBefore(eDate) || sDate.equals(eDate)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } catch (ParseException e) {
+                        return false;
+                    }
+                }, invalidPrompt);
+                ArrayList<Ticket> ticketsSelected = new ArrayList<Ticket>();
+                int countOpen = 0, countResolved = 0, countUnresolved = 0;
+                for (Map.Entry<String, User> mapElement : users.entrySet()) {
+                    User value = mapElement.getValue();
+                    List<Ticket> userTickets = value.getTickets();
+                    if (value.getIsTechnician() == true) {
+                        for (Ticket userTicket : userTickets) {
+                            LocalDate sDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                            LocalDate eDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                            if ((userTicket.getDateCreated().isAfter(sDate)
+                                    && userTicket.getDateCreated().isBefore(eDate))
+                                    || userTicket.getDateCreated().isEqual(sDate)
+                                    || userTicket.getDateCreated().isEqual(eDate)) {
+                                ticketsSelected.add(userTicket);
+                                if (userTicket.getTicketStatus().name().equals("Open")) {
+                                    countOpen++;
+                                }
+                                if (userTicket.getTicketStatus().name().equals("CompletedResolved")) {
+                                    countResolved++;
+                                }
+                                if (userTicket.getTicketStatus().name().equals("CompletedUnresolved")) {
+                                    countUnresolved++;
+                                }
+                            }
+                        }
+                    }
+                }
+                // Print results
+                System.out.println("\n\nTickets submitted: " + ticketsSelected.size());
+                System.out.println("Tickets open: " + countOpen);
+                System.out.println("Tickets resolved: " + countResolved);
+                System.out.println("Tickets unresolved: " + countUnresolved);
+                for (int i = 0; i < ticketsSelected.size(); i++) {
+                    printTicketDetails(ticketsSelected.get(i));
+                }
             }
         }
 
