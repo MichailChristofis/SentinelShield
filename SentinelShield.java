@@ -179,7 +179,7 @@ public class SentinelShield {
                 Severity:     %s
                 Status:       %s
                 Technician:   %s
-                Time Active:  %s
+                Time Active:  %s days
                 ----------------------------
                 """;
         System.out.printf(formatString,
