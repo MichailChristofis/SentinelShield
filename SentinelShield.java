@@ -367,9 +367,11 @@ public class SentinelShield {
                     break;
                 case 2:
                     ticket.setTicketStatus(Ticket.TicketStatus.CompletedResolved);
+                    ticket.setDateCompleted(LocalDate.now());
                     break;
                 case 3:
                     ticket.setTicketStatus(Ticket.TicketStatus.CompletedUnresolved);
+                    ticket.setDateCompleted(LocalDate.now());
                     break;
             }
 
