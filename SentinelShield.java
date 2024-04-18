@@ -431,7 +431,7 @@ public class SentinelShield {
             }
             for (int i = 0; i < tickets.size(); i++) {
                 if (!tickets.get(i).getIsArchived()) {
-                    System.out.print("---\nTicket description  :");
+                    System.out.print("---\nTicket description:  ");
                     System.out.println(tickets.get(i).getDescription());
                     System.out.print("Ticket severity:  ");
                     System.out.println(tickets.get(i).getSeverity());
