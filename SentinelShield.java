@@ -390,6 +390,8 @@ public class SentinelShield {
                     ticket.setSeverity(Ticket.Severity.High);
                     break;
             }
+            ticket.getAssignedTechnician().forgetTicket(ticket);
+            serviceDesk.AssignTicket(ticket, true);
 
         } else {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
@@ -413,7 +415,7 @@ public class SentinelShield {
         } while (severity.compareTo("1") != 0 && severity.compareTo("2") != 0 && severity.compareTo("3") != 0);
         Ticket createdTicket = new Ticket(issue, severity, currentUser);
         // Assign the ticket to the Service Desk, and therefore user
-        serviceDesk.AssignTicket(createdTicket);
+        serviceDesk.AssignTicket(createdTicket, false);
     }
 
     // The viewTicketsScreen() method, handles the user interface
@@ -460,8 +462,8 @@ public class SentinelShield {
         // TEST CODE, REMOVE BEFORE SUBMISSION
         users.put("test@test.com", new User("test@test.com", "test", "test",
                 "0412345678", "test", false));
-        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test@test.com")));
-        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test@test.com")));
+        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test@test.com")), false);
+        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test@test.com")),false);
 
         // Just because I'm a sadist doesn't mean I'm a masochist.
         users.put("ss", new User("ss", "SkyService", "SkyService",
