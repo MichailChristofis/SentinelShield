@@ -4,6 +4,7 @@
 import java.time.LocalDate;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 public class Ticket {
     enum Severity {
@@ -24,6 +25,7 @@ public class Ticket {
     private TicketStatus ticketStatus;
     private LocalDate dateCompleted, dateCreated;
 
+    private UUID uuid = UUID.randomUUID();
     // This stores the users which created this ticket's email so it can be
     // accessed without searching through the list of all staff.
     private User createdBy;
@@ -77,11 +79,11 @@ public class Ticket {
 
     private void setTicketSeverity(int severity) {
         if (severity == 0) {
-            this.severity = Severity.valueOf("Low");
+            this.setSeverity(Severity.valueOf("Low"));
         } else if (severity == 1) {
-            this.severity = Severity.valueOf("Medium");
+            this.setSeverity(Severity.valueOf("Medium"));
         } else if (severity == 2) {
-            this.severity = Severity.valueOf("High");
+            this.setSeverity(Severity.valueOf("High"));
         }
     }
 
@@ -219,4 +221,7 @@ public class Ticket {
         assignTo.assignTicket(this);
     }
 
+    public UUID getUUID() {
+        return this.uuid;
+    }
 }

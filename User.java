@@ -103,4 +103,8 @@ public class User {
     public void assignTicket(Ticket ticket) {
         tickets.add(ticket);
     }
+    public void forgetTicket(Ticket forgetMe) {
+        tickets.removeIf(e -> e.getUUID().equals(forgetMe.getUUID()));
+    }
+
 }
