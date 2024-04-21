@@ -134,11 +134,11 @@ public class Ticket {
 
     public String getTicketStatusString() {
         switch (this.ticketStatus) {
-            case Ticket.TicketStatus.Open:
+            case Open:
                 return "Open";
-            case Ticket.TicketStatus.CompletedResolved:
+            case CompletedResolved:
                 return "Completed (Resolved)";
-            case Ticket.TicketStatus.CompletedUnresolved:
+            case CompletedUnresolved:
                 return "Completed (Unresolved)";
         }
         return "Error";
