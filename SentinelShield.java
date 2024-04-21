@@ -206,7 +206,6 @@ public class SentinelShield {
                     "Do you want to view your assigned tickets (1), all closed or archived tickets (2), sort tickets by period (3) or logout (4)?\n",
                     s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
                     "Please enter 1, 2, 3 or 4.");
-            List<Ticket> tickets = new ArrayList<>();
             if (choice.equals("4")) {
                 return;
             }
@@ -216,11 +215,7 @@ public class SentinelShield {
                 } else {
                     System.out.println("\nYour Assigned and Open Tickets: \n");
                     int i = 1;
-                    for (Ticket t : currentUser.getTickets()) {
-                        if (t.getTicketStatus() != Ticket.TicketStatus.Open) {
-                            continue;
-                        }
-                        tickets.add(t);
+                    for (Ticket t : currentUser.getOpenTickets()) {
                         System.out.printf("%-3d%-30s%-10s%-15s%n", i,
                                 t.getAssignedTechnician().getFirstName() + " "
                                         + t.getAssignedTechnician().getLastName(),
@@ -242,10 +237,10 @@ public class SentinelShield {
                     }, prompt);
                     if (!choice.toLowerCase().equals("q")) {
                         int ticketNo = Integer.parseInt(choice);
-                        if (ticketNo > tickets.size() || ticketNo <= 0) {
+                        if (ticketNo > currentUser.getOpenTickets().size() || ticketNo <= 0) {
                             System.out.println("Please choose a valid ticket number.");
                         }
-                        techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
+                        techViewIndividualTicketScreen(currentUser.getOpenTickets().get(ticketNo - 1));
                     }
                 }
                 
@@ -261,10 +256,7 @@ public class SentinelShield {
 
                     // NVM That's terrible let's just get all tickets
 
-                    for (Ticket t : serviceDesk.returnAllTickets()) {
-                        if (t.getTicketStatus() == Ticket.TicketStatus.Open)
-                            continue;
-                        tickets.add(t);
+                    for (Ticket t : serviceDesk.returnAllClosedAndArchivedTickets()) {
                         System.out.printf("%-3d%-30s%-10s%-15s%n", i,
                                 t.getAssignedTechnician().getFirstName() + " "
                                         + t.getAssignedTechnician().getLastName(),
