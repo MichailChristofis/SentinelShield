@@ -27,13 +27,28 @@ public class SentinelShield {
     private User currentUser;
     private Date startDate, endDate;
 
+    //The PASSWORD_REGEX is the regex string used
+    //to verify if the password provided meets the
+    //criteria outlined in the assignment
+    //specification. It helps ensure that new passwords
+    //are always correct as per the specification.
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$";
 
+    //The SentinelShield() method is a constructor
+    //used by the SentinelShield class so as
+    //to construct and instantiate the variables
+    //as necessary.
     public SentinelShield(Map<String, User> users, ServiceDesk serviceDesk) {
         this.users = users;
         this.serviceDesk = serviceDesk;
     }
 
+    //The getUserInput() method is a method
+    //used to get a user's input, validate
+    //it based on the validation function
+    //and thus ensure that the input is
+    //appropriate. By doing so code repetition
+    //is eliminated.
     private String getUserInput(String prompt, Predicate<String> validationFunc, String invalidPrompt) {
         System.out.print(prompt);
         String input = console.nextLine();
@@ -377,7 +392,10 @@ public class SentinelShield {
             }
         }
     }
-
+    
+    //The techViewIndividualTicketScreen() method prints
+    //the data of a particular ticket to the screen,
+    //thus preventing code repetition.
     private void techViewIndividualTicketScreen(Ticket ticket) {
         System.out.printf("%nAuthor: %s%n",
                 ticket.getCreatedBy().getFirstName() + " " + ticket.getCreatedBy().getLastName());
@@ -401,6 +419,9 @@ public class SentinelShield {
         }
     }
 
+    //The techViewArchivedTicketScreen() method prints
+    //the data of a particular archived ticket to the
+    //screen thus preventing code repetition.
     private void techViewArchivedTicketScreen(Ticket ticket) {
         System.out.printf("%nAuthor: %s%n",
                 ticket.getCreatedBy().getFirstName() + " " + ticket.getCreatedBy().getLastName());
@@ -409,6 +430,10 @@ public class SentinelShield {
         System.out.printf("Description: %s%n%n", ticket.getDescription());
     }
 
+    //The updateTicketStatusMenu() method updates
+    //a ticket's status to Open, CompletedResolved
+    //or CompletedUnresolved, depending on the user's
+    //selection.
     private void updateTicketStatusMenu(Ticket ticket) {
         // If the ticket isn't archived
         if (!ticket.getIsArchived()) {
@@ -434,7 +459,11 @@ public class SentinelShield {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
         }
     }
+    
 
+    //The updateTicketSeverityMenu() method updates
+    //a ticket's severity to Low Medium or High,
+    // depending on the user's selection.
     private void updateTicketSeverityMenu(Ticket ticket) {
         // If the ticket isn't archived
         if (!ticket.getIsArchived()) {
