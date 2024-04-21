@@ -27,9 +27,9 @@ public class SentinelShield {
     private User currentUser;
     private Date startDate, endDate;
 
-    // The PASSWORD_REGEX is the regex string used
-    // to verify if the password provided meets the
-    // criteria outlined in the assignment
+    // The PASSWORD_REGEX is the ReGex string used
+    // to verify, if the password provided meets the
+    // criteria outlined, in the assignment
     // specification. It helps ensure that new passwords
     // are always correct as per the specification.
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{20,}$";
@@ -547,17 +547,6 @@ public class SentinelShield {
 
     // This method starts the SentinelShield program and runs the user menu.
     public void run() {
-        // TEST CODE, REMOVE BEFORE SUBMISSION
-        users.put("test@test.com", new User("test@test.com", "test", "test",
-                "0412345678", "test", false));
-        serviceDesk.AssignTicket(new Ticket("Test ticket", "1", users.get("test@test.com")), false);
-        serviceDesk.AssignTicket(new Ticket("Test ticket 2", "3", users.get("test@test.com")),false);
-
-        // Just because I'm a sadist doesn't mean I'm a masochist.
-        users.put("ss", new User("ss", "SkyService", "SkyService",
-                "0", "ss", false));
-
-        // END TEST CODE
         boolean conloop = true;
         while (conloop) {
             // Refresh ticket status every time the menu is returned to
