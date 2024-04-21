@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+import java.time.format.DateTimeFormatter;
 
 public class Ticket {
     enum Severity {
@@ -194,6 +195,13 @@ public class Ticket {
     // for the ticket's date.
     public LocalDate getDateCreated() {
         return this.dateCreated;
+    }
+
+    public String getDateCreatedString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String formattedDate = this.dateCreated.format(formatter);
+        return formattedDate;
+
     }
 
     // The setDateCreated() method is a setter method,

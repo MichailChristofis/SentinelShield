@@ -275,7 +275,7 @@ public class SentinelShield {
                         i++;
                     }
                     System.out.println("");
-                    // Todo Handle Archived menu here
+                    // BUGBUG Handle Archived menu here
                 }
             } else if (choice.equals("3")) {
                 String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
@@ -449,12 +449,34 @@ public class SentinelShield {
     private void viewTicketsScreen() {
         if (currentUser.getIsTechnician()) {
             // TODO: Display all technicians tickets and allow them to select one to view
+            // This is being handled elsewhere, viewTicketsScreen() is called exclusivly by staff
+        // We are a staff member:
         } else {
-            List<Ticket> tickets = currentUser.getTickets();
+            List<Ticket> tickets = currentUser.getOpenTickets();
             if (tickets.size() == 0) {
-                System.out.println("\nYou don't have any tickets at the moment.\n");
+                System.out.println("\nYou don't have any open tickets at the moment.\n");
             } else {
-                System.out.println("\nYour tickets:");
+                System.out.println("\nYour Open Tickets:");
+                System.out.printf("%-30s%-10s%-23s%-18s%-15s%n", 
+                            "Assigned to",
+                            "Severity",
+                            "Status",
+                            "Date Created",
+                            "Description");
+
+                for (Ticket t : tickets) {
+                    System.out.printf("%-30s%-10s%-23s%-18s%-15s%n",
+                            t.getAssignedTechnician().getFirstName() + " "
+                                    + t.getAssignedTechnician().getLastName(),
+                            t.getSeverity(),
+                            t.getTicketStatusString(),
+                            t.getDateCreatedString(),
+                            t.getDescription());
+                }
+                System.out.println("");
+
+
+
             }
             for (int i = 0; i < tickets.size(); i++) {
                 if (!tickets.get(i).getIsArchived()) {
@@ -466,8 +488,8 @@ public class SentinelShield {
                     System.out.println(tickets.get(i).getSeverity());
                     System.out.print("Ticket status:  ");
                     System.out.println(tickets.get(i).getTicketStatus());
-                    System.out.print("Date created:  ");
-                    System.out.println(tickets.get(i).getDateCreated());
+                    System.out.print(":  ");
+                    System.out.println(tickets.get(i).);
                     System.out.println("---");
                     */
                 }
