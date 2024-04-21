@@ -8,19 +8,19 @@ import java.util.UUID;
 import java.time.format.DateTimeFormatter;
 
 public class Ticket {
-	//The Severity enum is used
-	//to check on the severity of a Ticket
-	//either being Low, Medium or High
+	// The Severity enum is used
+	// to check on the severity of a Ticket
+	// either being Low, Medium or High
     enum Severity {
         Low,
         Medium,
         High
     }
     
-    //The TicketStatus enum is used to check
-    //a ticket's status, which can be Open,
-    //Completed Resolved or Completed
-    //Unresolved.
+    // The TicketStatus enum is used to check
+    // a ticket's status, which can be Open,
+    // Completed Resolved or Completed
+    // Unresolved.
     enum TicketStatus {
         Open,
         CompletedResolved,
@@ -85,8 +85,8 @@ public class Ticket {
         }
     }
 
-    //The setTicketSeverity method sets a ticket's severity
-    //to whatever is required. It is a setter method.
+    // The setTicketSeverity method sets a ticket's severity
+    // to whatever is required. It is a setter method.
     private void setTicketSeverity(int severity) {
         if (severity == 0) {
             this.setSeverity(Severity.valueOf("Low"));
@@ -97,9 +97,9 @@ public class Ticket {
         }
     }
 
-    //The getCreatedBy() method is a getter method
-    //used to retrieve the user that created the
-    //particular ticket.
+    // The getCreatedBy() method is a getter method
+    // used to retrieve the user that created the
+    // particular ticket.
     public User getCreatedBy() {
         return this.createdBy;
     }
@@ -134,9 +134,9 @@ public class Ticket {
         return this.ticketStatus;
     }
 
-    //The getTicketStatusString() method is a getter
-    //method, retrieving the ticket's status as a
-    //string.
+    // The getTicketStatusString() method is a getter
+    // method, retrieving the ticket's status as a
+    // string.
     public String getTicketStatusString() {
         switch (this.ticketStatus) {
             case Open:
@@ -202,8 +202,8 @@ public class Ticket {
         return this.dateCreated;
     }
     
-    //The getDateCreatedString() method is a getter method,
-    //used to retrieve the date the ticket was created.
+    // The getDateCreatedString() method is a getter method,
+    // used to retrieve the date the ticket was created.
     public String getDateCreatedString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         String formattedDate = this.dateCreated.format(formatter);
@@ -257,8 +257,8 @@ public class Ticket {
         assignTo.assignTicket(this);
     }
     
-    //The method getUUID() is a getter method
-    //used to retrieve a tickets UUID.
+    // The method getUUID() is a getter method
+    // used to retrieve a tickets UUID.
     public UUID getUUID() {
         return this.uuid;
     }
