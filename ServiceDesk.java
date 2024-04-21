@@ -64,27 +64,39 @@ public class ServiceDesk {
         // The technician with the least number of tickets currently assigned
         // Initializing with first technician
         User topTechnician = technicianList[0];
+        int minTicketCount = topTechnician.getTickets().size();
 
-        boolean allTechniciansHaveSameTicketCount = true;
+        boolean allTechniciansHaveSameMinimumTicketCount = true;
 
         for (User technician : technicianList) {
-            if (technician.getTickets().size() < topTechnician.getTickets().size()) {
+            int ticketCount = technician.getTickets().size();
+
+            // Lets think this through properly
+            if (ticketCount < minTicketCount) {
                 topTechnician = technician;
-            }
-            // It has been required that if every technician has an identical
-            // number of tickets assigned, one of them be chosen at random.
-            // This will aide with that process.
-            if (technician.getTickets().size() != topTechnician.getTickets().size()) {
-                allTechniciansHaveSameTicketCount = false;
-            }
+                minTicketCount = ticketCount;
+                allTechniciansHaveSameMinimumTicketCount = false;
+            } else if (ticketCount > minTicketCount) {
+                // Also false, as not all techs have same min count
+                allTechniciansHaveSameMinimumTicketCount = false;
+            }            
         }
         // We have now walked through all the users.
         // If they all have the same ticket count, pick one at random:
-        if (allTechniciansHaveSameTicketCount) {
+
+        // It has been required that if every technician has an identical
+        // number of tickets assigned, one of them be chosen at random.
+        // This only occurs if they all have the same count, as if n technicians
+        // are tied, then one of those n should be chosen.
+        // Shuffling in this case could result in another technician being overloaded
+        // with even more tickets unnecessarily.
+        // This will aide with that process.
+
+        // NOW this should work 
+        if (allTechniciansHaveSameMinimumTicketCount) {
             Random generator = new Random();
             int index = generator.nextInt(technicianList.length);
             topTechnician = technicianList[index];
-
         }
         return topTechnician;
     }
