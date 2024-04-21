@@ -90,13 +90,14 @@ public class SentinelShield {
         String email = "";
         String password = "";
         // Loop until the user logs in successfully
-        do {
-            email = getUserInput("Please enter your email: ");
-            password = getUserInput("Please enter your password: ");
-            if (!validateLogin(email, password)) {
-                System.out.println("Invalid credentials");
-            }
-        } while (!validateLogin(email, password));
+        email = getUserInput("Please enter your email: ");
+        password = getUserInput("Please enter your password: ");
+        if (!validateLogin(email, password)) {
+            System.out.println("Invalid credentials");
+        }
+        if (!validateLogin(email, password)) {
+            return;
+        }
         // Print login success message based on whether or not user is technician
         // TODO Update me when there are separate dashboard functions
         if (currentUser.getIsTechnician()) {
@@ -127,12 +128,16 @@ public class SentinelShield {
     // The signupScreen() method, handles the user interface
     // and communication with the user, for the signup screen.
     private void signupScreen() {
-        String email = getUserInput(
-                "Please enter your Email: ",
-                s -> s.matches("^([a-zA-Z0-9]+\\.?)*[a-zA-Z0-9]@([a-zA-Z0-9]+\\.?)+[a-zA-Z0-9]$"),
-                "Invalid email address.\nAddress must conform to RFC 5322.\nPlease write your email address, starting with numbers and letters,\nthen the '@' symbol, then a domain name, including a '.', followed by the TLD.\nEmail: ");
-        // TODO: Decide if we need to make sure the email doesn't already exist and
-        // implement if so
+        String email = "";
+        while (email.isEmpty() || users.containsKey(email)) {
+            email = getUserInput(
+                    "Please enter your Email: ",
+                    s -> s.matches("^([a-zA-Z0-9]+\\.?)*[a-zA-Z0-9]@([a-zA-Z0-9]+\\.?)+[a-zA-Z0-9]$"),
+                    "Invalid email address.\nAddress must conform to RFC 5322.\nPlease write your email address, starting with numbers and letters,\nthen the '@' symbol, then a domain name, including a '.', followed by the TLD.\nEmail: ");
+            if (users.containsKey(email)) {
+                System.out.println("There is already an account with that email. Try a different email.");
+            }
+        }
         String firstName = getUserInput(
                 "Please enter your First Name: ",
                 s -> !s.isEmpty(),
@@ -215,7 +220,7 @@ public class SentinelShield {
         System.out.println("\nWelcome, " + currentUser.getFirstName() + ".");
         while (true) {
             // Refresh ticket status every time the menu is returned to
-            serviceDesk.automaticallyRefreshTickets();            
+            serviceDesk.automaticallyRefreshTickets();
             String choice = getUserInput(
                     "Do you want to view your assigned tickets (1), all closed or archived tickets (2), sort tickets by period (3) or logout (4)?\n",
                     s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
@@ -231,9 +236,9 @@ public class SentinelShield {
                 } else {
                     System.out.println("\nYour Assigned and Open Tickets: \n");
                     System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", 0,
-                                "Name",
-                                "Severity",
-                                "Status", "Description");
+                            "Name",
+                            "Severity",
+                            "Status", "Description");
 
                     int i = 1;
                     for (Ticket t : currentUser.getOpenTickets()) {
@@ -260,28 +265,29 @@ public class SentinelShield {
                         int ticketNo = Integer.parseInt(choice);
                         if (ticketNo > currentUser.getOpenTickets().size() || ticketNo <= 0) {
                             System.out.println("Please choose a valid ticket number.");
-                        }
-                        else {
-                        	techViewIndividualTicketScreen(currentUser.getOpenTickets().get(ticketNo - 1));
+                        } else {
+                            techViewIndividualTicketScreen(currentUser.getOpenTickets().get(ticketNo - 1));
                         }
                     }
                 }
-                
+
             } else if (choice.equals("2")) {
                 if (serviceDesk.returnAllClosedAndArchivedTickets().size() == 0) {
                     System.out.println("\nThere are currently no Closed or Archived Tickets.\n");
                 } else {
                     System.out.println("\nAll Closed and Archived Tickets: ");
-                    // Tickets are stored both in technicians, and in whatever the other ones are called.
-                    // We could pick specifically just one of these lists, but instead, let's just track
+                    // Tickets are stored both in technicians, and in whatever the other ones are
+                    // called.
+                    // We could pick specifically just one of these lists, but instead, let's just
+                    // track
                     // if a ticket's already printed, and if so, skip printing.
 
                     // NVM That's terrible let's just get all tickets
 
                     System.out.printf("%-3d%-30s%-10s%-23s%-15s%n", 0,
-                                "Name",
-                                "Severity",
-                                "Status", "Description");
+                            "Name",
+                            "Severity",
+                            "Status", "Description");
 
                     int i = 1;
                     for (Ticket t : serviceDesk.returnAllClosedAndArchivedTickets()) {
@@ -313,12 +319,14 @@ public class SentinelShield {
                             System.out.println("Please choose a valid ticket number.");
                         }
                         if (serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1).getIsArchived()) {
-                            techViewArchivedTicketScreen(serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1));
-                            System.out.println("\nThis ticket is archived, and cannot be modified.\n");                                                
+                            techViewArchivedTicketScreen(
+                                    serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1));
+                            System.out.println("\nThis ticket is archived, and cannot be modified.\n");
                         } else {
-                            techViewIndividualTicketScreen(serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1));
+                            techViewIndividualTicketScreen(
+                                    serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1));
                         }
-                            
+
                     }
                 }
             } else if (choice.equals("3")) {
@@ -392,7 +400,7 @@ public class SentinelShield {
             }
         }
     }
-    
+
     // The techViewIndividualTicketScreen() method prints
     // the data of a particular ticket to the screen,
     // thus preventing code repetition.
@@ -459,7 +467,6 @@ public class SentinelShield {
             System.out.println("Sorry, this ticket has been archived, and cannot be edited.");
         }
     }
-    
 
     // The updateTicketSeverityMenu() method updates
     // a ticket's severity to Low Medium or High,
@@ -515,20 +522,21 @@ public class SentinelShield {
     private void viewTicketsScreen() {
         if (currentUser.getIsTechnician()) {
             // TODO: Display all technicians tickets and allow them to select one to view
-            // This is being handled elsewhere, viewTicketsScreen() is called exclusivly by staff
-        // We are a staff member:
+            // This is being handled elsewhere, viewTicketsScreen() is called exclusivly by
+            // staff
+            // We are a staff member:
         } else {
             List<Ticket> tickets = currentUser.getOpenTickets();
             if (tickets.size() == 0) {
                 System.out.println("\nYou don't have any open tickets at the moment.\n");
             } else {
                 System.out.println("\nYour Open Tickets:");
-                System.out.printf("%-30s%-10s%-23s%-18s%-15s%n", 
-                            "Assigned to",
-                            "Severity",
-                            "Status",
-                            "Date Created",
-                            "Description");
+                System.out.printf("%-30s%-10s%-23s%-18s%-15s%n",
+                        "Assigned to",
+                        "Severity",
+                        "Status",
+                        "Date Created",
+                        "Description");
 
                 for (Ticket t : tickets) {
                     System.out.printf("%-30s%-10s%-23s%-18s%-15s%n",
@@ -587,7 +595,7 @@ public class SentinelShield {
         techniciansLevel1[0] = new User("harrystyles@gmail.com", "Harry", "Styles", "(02) 1234 5678", "harryharry",
                 true);
         techniciansLevel1[1] = new User("niallhorran@gmail.com", "Niall", "Horan", "(02) 5678 1234", "nialnial", true);
-        techniciansLevel1[2] = new User("liampayne@gmail.com", "Liam", "Payne", "(02) 1234 5666", "limaliam", true);
+        techniciansLevel1[2] = new User("liampayne@gmail.com", "Liam", "Payne", "(02) 1234 5666", "liamliam", true);
         techniciansLevel2[0] = new User("louistomlison@gmail.com", "Louis", "Tomlison", "(02) 1234 1234", "louislouis",
                 true);
         techniciansLevel2[1] = new User("zaynmalik@gmail.com", "Zayn", "Malik", "(02) 5678 5678", "zaynzayn", true);
