@@ -246,7 +246,9 @@ public class SentinelShield {
                         if (ticketNo > currentUser.getOpenTickets().size() || ticketNo <= 0) {
                             System.out.println("Please choose a valid ticket number.");
                         }
-                        techViewIndividualTicketScreen(currentUser.getOpenTickets().get(ticketNo - 1));
+                        else {
+                        	techViewIndividualTicketScreen(currentUser.getOpenTickets().get(ticketNo - 1));
+                        }
                     }
                 }
                 
