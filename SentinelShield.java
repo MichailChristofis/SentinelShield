@@ -214,9 +214,14 @@ public class SentinelShield {
                     System.out.println("\nYou don't have any open tickets currently assigned to you.\n");
                 } else {
                     System.out.println("\nYour Assigned and Open Tickets: \n");
+                    System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", 0,
+                                "Name",
+                                "Severity",
+                                "Status", "Description");
+
                     int i = 1;
                     for (Ticket t : currentUser.getOpenTickets()) {
-                        System.out.printf("%-3d%-30s%-10s%-15s%n", i,
+                        System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", i,
                                 t.getAssignedTechnician().getFirstName() + " "
                                         + t.getAssignedTechnician().getLastName(),
                                 t.getSeverity(),
