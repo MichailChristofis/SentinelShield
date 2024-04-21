@@ -254,15 +254,20 @@ public class SentinelShield {
                     System.out.println("\nThere are currently no Closed or Archived Tickets.\n");
                 } else {
                     System.out.println("\nAll Closed and Archived Tickets: ");
-                    int i = 1;
                     // Tickets are stored both in technicians, and in whatever the other ones are called.
                     // We could pick specifically just one of these lists, but instead, let's just track
                     // if a ticket's already printed, and if so, skip printing.
 
                     // NVM That's terrible let's just get all tickets
 
+                    System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", 0,
+                                "Name",
+                                "Severity",
+                                "Status", "Description");
+
+                    int i = 1;
                     for (Ticket t : serviceDesk.returnAllClosedAndArchivedTickets()) {
-                        System.out.printf("%-3d%-30s%-10s%-15s%n", i,
+                        System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", i,
                                 t.getAssignedTechnician().getFirstName() + " "
                                         + t.getAssignedTechnician().getLastName(),
                                 t.getSeverity(),
@@ -270,8 +275,9 @@ public class SentinelShield {
                         i++;
                     }
                     System.out.println("");
+                    // Todo Handle Archived menu here
                 }
-            } else {
+            } else if (choice.equals("3")) {
                 String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
                 String invalidPrompt = "Invalid date, please select beginning date of filter (dd/mm/yyyy): ";
                 // Check if start date is well formatted

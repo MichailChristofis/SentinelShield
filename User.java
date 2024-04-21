@@ -101,7 +101,11 @@ public class User {
     }
 
     public List<Ticket> getOpenTickets() {
-        List<Ticket> openTickets = this.getTickets();
+        List<Ticket> openTickets =  new ArrayList<>();
+        // Terrible
+        for (Ticket ticket : this.getTickets()) {
+            openTickets.add(ticket);
+        }
         openTickets.removeIf(e -> e.getIsArchived());
         openTickets.removeIf(e -> !e.getIsOpen());
 
