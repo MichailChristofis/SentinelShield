@@ -131,6 +131,18 @@ public class Ticket {
         return this.ticketStatus;
     }
 
+    public String getTicketStatusString() {
+        switch (this.ticketStatus) {
+            case Ticket.TicketStatus.Open:
+                return "Open";
+            case Ticket.TicketStatus.CompletedResolved:
+                return "Completed (Resolved)";
+            case Ticket.TicketStatus.CompletedUnresolved:
+                return "Completed (Unresolved)";
+        }
+        return "Error";
+    }
+
     // The setTicketStatus() method is a setter method,
     // for the ticket's status.
     public void setTicketStatus(TicketStatus ticketStatus) {

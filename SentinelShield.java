@@ -260,18 +260,18 @@ public class SentinelShield {
 
                     // NVM That's terrible let's just get all tickets
 
-                    System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", 0,
+                    System.out.printf("%-3d%-30s%-10s%-23s%-15s%n", 0,
                                 "Name",
                                 "Severity",
                                 "Status", "Description");
 
                     int i = 1;
                     for (Ticket t : serviceDesk.returnAllClosedAndArchivedTickets()) {
-                        System.out.printf("%-3d%-30s%-10s%-15s%-15s%n", i,
+                        System.out.printf("%-3d%-30s%-10s%-23s%-15s%n", i,
                                 t.getAssignedTechnician().getFirstName() + " "
                                         + t.getAssignedTechnician().getLastName(),
                                 t.getSeverity(),
-                                t.getTicketStatus(), t.getDescription());
+                                t.getTicketStatusString(), t.getDescription());
                         i++;
                     }
                     System.out.println("");
