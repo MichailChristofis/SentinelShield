@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 
-// import Ticket;
 
 public class ServiceDesk {
     private User[] techniciansLevel1, techniciansLevel2;
@@ -24,25 +23,6 @@ public class ServiceDesk {
     // the number of tickets already assigned to each
     // technician.
     public void AssignTicket(Ticket toAssign, boolean reassign) {
-        // Before we start, however, keep in mind that although fun, and learning
-        // are the primary goals of all RMIT activities, we must give the user who
-        // created the ticket a copy of the ticket.
-        // Rather than doing this after the ticket is created from the menu system,
-        // I will instead do it here, rendering "AssignTicket" something of a
-        // notarization
-        // system for tickets.
-        // This is terrible, by the way, as if ticket ownership is changed, keeping
-        // track of
-        // past and future owners will be laborious, but it makes the features we
-        // currently
-        // need to implement rather trivial.
-        // Incidentally, this also means that any user can call AssignTicket, and it
-        // won't
-        // necessarily be assigned to them, just to whoever was marked as the creator in
-        // the ticket's properties.
-        // OH WELL
-        
-        // If we're not reassigning, then no need to assign it to the creator again
         if (!reassign) {
             toAssign.getCreatedBy().assignTicket(toAssign);
         }
@@ -60,6 +40,13 @@ public class ServiceDesk {
         System.out.println("\nAssigning ticket to technician " + targetUser.getFirstName() + "\n");
     }
 
+    //The PickUserForTicket method handles the assignment of a ticket
+    //to a technician. It assigns the ticket to the technician with
+    //the least number of tickets currently assigned to them, and if
+    //multiple technicians have the same number of tickets
+    //it assigns the ticket randomly between the technicians with 
+    //equal number of tickets. This is done so as to ensure that technicians
+    //are not being overloaded.
     private User PickUserForTicket(User[] technicianList) {
         // The technician with the least number of tickets currently assigned
         // Initializing with first technician
@@ -91,8 +78,6 @@ public class ServiceDesk {
         // Shuffling in this case could result in another technician being overloaded
         // with even more tickets unnecessarily.
         // This will aide with that process.
-
-        // NOW this should work 
         if (allTechniciansHaveSameMinimumTicketCount) {
             Random generator = new Random();
             int index = generator.nextInt(technicianList.length);
@@ -101,8 +86,9 @@ public class ServiceDesk {
         return topTechnician;
     }
 
-    // Refresh ticket status to automatically archive after 24 hours, per Sprint 2
-    // 9.1
+    //The automaticallyRefreshTickets() method is used to automatically
+    //refresh the ticket's status after a 24 hour period, setting it
+    //to archived.
     public void automaticallyRefreshTickets() {
         // The tickets are stored in the technician
         // So process everything for each technician
@@ -110,6 +96,9 @@ public class ServiceDesk {
         processAllUserTickets(techniciansLevel2);
     }
 
+    //The processAllUserTickets method is used to process
+    //all the user's tickets, automatically refreshing their
+    //status to archived if needed.
     private void processAllUserTickets(User[] users) {
         // Now, for each user, walk through all their tickets
         for (User technician : users) {
@@ -122,6 +111,8 @@ public class ServiceDesk {
         }
     }
 
+    //The returnAllTickets() method is used to return
+    //all the tickets assigned to a particular technician.
     public ArrayList<Ticket> returnAllTickets() {
         ArrayList<Ticket> allTickets = new ArrayList<Ticket>();
 
@@ -146,7 +137,10 @@ public class ServiceDesk {
 
         return allTickets;
     }
-
+    
+    //The returnAllClosedAndArchivedTickets() method is used to
+    //return an arraylist of all closed and archived tickets. This
+    //is usefule in multiple sections of the code later on.
     public ArrayList<Ticket> returnAllClosedAndArchivedTickets() {
         ArrayList<Ticket> closedAndArchivedTickets = this.returnAllTickets();
         closedAndArchivedTickets.removeIf(e -> e.getIsOpen());

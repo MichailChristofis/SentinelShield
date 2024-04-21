@@ -115,16 +115,6 @@ public class Ticket {
     public void setSeverity(Severity severity) {
         this.severity = severity;
     }
-    // Todo: Once this is called from the menu, execute relevant code:
-    // It could be placed in the setter however Ticket holds no reference to
-    // ServiceDesk
-    /*
-     * // Check if we need to reassign
-     * if ((this.severity == Severity.High) && (severity != Severity.High) ||
-     * (this.severity != Severity.High) && (severity == Severity.High)) {
-     * serviceDesk.AssignTicket(createdTicket);
-     * }
-     */
 
     // The getTicketStatus() method is a getter method,
     // for the ticket's status.
