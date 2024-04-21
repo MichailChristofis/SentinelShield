@@ -512,38 +512,8 @@ public class SentinelShield {
                 }
                 System.out.println("");
 
-
-
-            }
-            for (int i = 0; i < tickets.size(); i++) {
-                if (!tickets.get(i).getIsArchived()) {
-                    // Old ticket printer, inconsistent with technician menu with nice formatting:
-                    /*
-                    System.out.print("---\nTicket description:  ");
-                    System.out.println(tickets.get(i).getDescription());
-                    System.out.print("Ticket severity:  ");
-                    System.out.println(tickets.get(i).getSeverity());
-                    System.out.print("Ticket status:  ");
-                    System.out.println(tickets.get(i).getTicketStatus());
-                    System.out.print(":  ");
-                    System.out.println(tickets.get(i).);
-                    System.out.println("---");
-                    */
-                }
             }
         }
-    }
-
-    // The completeTicketScreen() method, handles the user interface
-    // and communication with the user, for the complete ticket screen.
-    private void completeTicketScreen() {
-        // TODO
-    }
-
-    // The checkForArchivedTickets() method, ....
-    // Joshua all yours mate, not sure what you wanted here
-    private void checkForArchivedTickets() {
-        // TODO
     }
 
     // This method starts the SentinelShield program and runs the user menu.

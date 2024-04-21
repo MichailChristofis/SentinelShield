@@ -174,7 +174,7 @@ public class Ticket {
         }
 
         // Check if it's been more that 24 hours
-        if (timeMarkedCompleted.isBefore(Instant.now().minus(24, ChronoUnit.SECONDS))) {
+        if (timeMarkedCompleted.isBefore(Instant.now().minus(24, ChronoUnit.HOURS))) {
             setIsArchived(true);
         }
     }
