@@ -134,4 +134,10 @@ public class ServiceDesk {
 
         return allTickets;
     }
+
+    public ArrayList<Ticket> returnAllClosedAndArchivedTickets() {
+        ArrayList<Ticket> closedAndArchivedTickets = this.returnAllTickets();
+        closedAndArchivedTickets.removeIf(e -> e.getIsOpen());
+        return closedAndArchivedTickets;
+    }
 }

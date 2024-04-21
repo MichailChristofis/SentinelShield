@@ -196,6 +196,15 @@ public class Ticket {
         return this.archived;
     }
 
+    public boolean getIsOpen() {
+        boolean isOpen = this.ticketStatus == TicketStatus.Open;
+        if (isOpen) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // The setIsArchived() method is a setter method,
     // for the ticket's archived status.
     public void setIsArchived(boolean isArchived) {

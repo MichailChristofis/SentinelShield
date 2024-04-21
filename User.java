@@ -100,6 +100,14 @@ public class User {
         return this.tickets;
     }
 
+    public List<Ticket> getOpenTickets() {
+        List<Ticket> openTickets = this.getTickets();
+        openTickets.removeIf(e -> e.getIsArchived());
+        openTickets.removeIf(e -> !e.getIsOpen());
+
+        return openTickets;
+    }
+
     public void assignTicket(Ticket ticket) {
         tickets.add(ticket);
     }

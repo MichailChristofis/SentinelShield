@@ -199,11 +199,11 @@ public class SentinelShield {
         // Loop until the function returns
         // Refresh ticket status every time the menu is returned to
         serviceDesk.automaticallyRefreshTickets();
-        System.out.println("Welcome, " + currentUser.getFirstName() + ".");
+        System.out.println("\nWelcome, " + currentUser.getFirstName() + ".");
         while (true) {
             // We only need to display a technician's own tickets here
             String choice = getUserInput(
-                    "Do you want to view your assigned tickets (1), all closed or archived tickets (2), sort tickets by period (3) or logout (4)?  ",
+                    "Do you want to view your assigned tickets (1), all closed or archived tickets (2), sort tickets by period (3) or logout (4)?\n",
                     s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
                     "Please enter 1, 2, 3 or 4.");
             List<Ticket> tickets = new ArrayList<>();
@@ -211,49 +211,56 @@ public class SentinelShield {
                 return;
             }
             if (choice.equals("1")) {
-                System.out.println("Your Tickets: ");
-                int i = 1;
-                for (Ticket t : currentUser.getTickets()) {
-                    if (t.getTicketStatus() != Ticket.TicketStatus.Open) {
-                        continue;
+                if (currentUser.getOpenTickets().size() == 0) {
+                    System.out.println("\nYou don't have any open tickets currently assigned to you.\n");
+                } else {
+                    System.out.println("\nYour Assigned and Open Tickets: \n");
+                    int i = 1;
+                    for (Ticket t : currentUser.getTickets()) {
+                        if (t.getTicketStatus() != Ticket.TicketStatus.Open) {
+                            continue;
+                        }
+                        tickets.add(t);
+                        System.out.printf("%-3d%-30s%-10s%-15s%n", i,
+                                t.getAssignedTechnician().getFirstName() + " "
+                                        + t.getAssignedTechnician().getLastName(),
+                                t.getSeverity(),
+                                t.getTicketStatus(), t.getDescription());
+                        i++;
                     }
-                    tickets.add(t);
-                    System.out.printf("%-3d%-30s%-10s%-15s%n", i,
-                            t.getAssignedTechnician().getFirstName() + " "
-                                    + t.getAssignedTechnician().getLastName(),
-                            t.getSeverity(),
-                            t.getTicketStatus(), t.getDescription());
-                    i++;
+                    String prompt = "\nSelect a ticket (number) to view and/or edit, or type 'q' to go back.\n";
+                    choice = getUserInput(prompt, s -> {
+                        if (s.toLowerCase().equals("q")) {
+                            return true;
+                        }
+                        try {
+                            Integer.parseInt(s);
+                            return true;
+                        } catch (NumberFormatException _e) {
+                            return false;
+                        }
+                    }, prompt);
+                    if (!choice.toLowerCase().equals("q")) {
+                        int ticketNo = Integer.parseInt(choice);
+                        if (ticketNo > tickets.size() || ticketNo <= 0) {
+                            System.out.println("Please choose a valid ticket number.");
+                        }
+                        techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
+                    }
                 }
-                String prompt = "Select a ticket (number) to view and/or edit, or type 'q' to quit.\n";
-                choice = getUserInput(prompt, s -> {
-                    if (s.toLowerCase().equals("q")) {
-                        return true;
-                    }
-                    try {
-                        Integer.parseInt(s);
-                        return true;
-                    } catch (NumberFormatException _e) {
-                        return false;
-                    }
-                }, prompt);
-                if (!choice.toLowerCase().equals("q")) {
-                    int ticketNo = Integer.parseInt(choice);
-                    if (ticketNo > tickets.size() || ticketNo <= 0) {
-                        System.out.println("Please choose a valid ticket number.");
-                    }
-                    techViewIndividualTicketScreen(tickets.get(ticketNo - 1));
-                }
+                
             } else if (choice.equals("2")) {
-                System.out.println("All Closed and Archived Tickets: ");
-                int i = 1;
-                // Tickets are stored both in technicians, and in whatever the other ones are called.
-                // We could pick specifically just one of these lists, but instead, let's just track
-                // if a ticket's already printed, and if so, skip printing.
+                if (serviceDesk.returnAllClosedAndArchivedTickets().size() == 0) {
+                    System.out.println("\nThere are currently no Closed or Archived Tickets.\n");
+                } else {
+                    System.out.println("\nAll Closed and Archived Tickets: ");
+                    int i = 1;
+                    // Tickets are stored both in technicians, and in whatever the other ones are called.
+                    // We could pick specifically just one of these lists, but instead, let's just track
+                    // if a ticket's already printed, and if so, skip printing.
 
-                // NVM That's terrible let's just get all tickets
+                    // NVM That's terrible let's just get all tickets
 
-                // for (User u : users.values()) {
                     for (Ticket t : serviceDesk.returnAllTickets()) {
                         if (t.getTicketStatus() == Ticket.TicketStatus.Open)
                             continue;
@@ -265,7 +272,8 @@ public class SentinelShield {
                                 t.getTicketStatus(), t.getDescription());
                         i++;
                     }
-                // }
+                    System.out.println("");
+                }
             } else {
                 String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
                 String invalidPrompt = "Invalid date, please select beginning date of filter (dd/mm/yyyy): ";
@@ -339,11 +347,11 @@ public class SentinelShield {
     }
 
     private void techViewIndividualTicketScreen(Ticket ticket) {
-        System.out.printf("Author: %s%n",
+        System.out.printf("%nAuthor: %s%n",
                 ticket.getCreatedBy().getFirstName() + " " + ticket.getCreatedBy().getLastName());
         System.out.printf("Severity: %s%n", ticket.getSeverity());
         System.out.printf("Status: %s%n", ticket.getTicketStatus());
-        System.out.printf("Description: %s%n", ticket.getDescription());
+        System.out.printf("Description: %s%n%n", ticket.getDescription());
         int choice = Integer
                 .parseInt(getUserInput(
                         "Would you like to:\n(1) Update the status of this ticket\n(2) Update the severity of the ticket, or\n(3) Go back to the technician menu\n",
@@ -440,12 +448,15 @@ public class SentinelShield {
             // TODO: Display all technicians tickets and allow them to select one to view
         } else {
             List<Ticket> tickets = currentUser.getTickets();
-            System.out.println("Your tickets:");
             if (tickets.size() == 0) {
-                System.out.println("You don't have any tickets at the moment.");
+                System.out.println("\nYou don't have any tickets at the moment.\n");
+            } else {
+                System.out.println("\nYour tickets:");
             }
             for (int i = 0; i < tickets.size(); i++) {
                 if (!tickets.get(i).getIsArchived()) {
+                    // Old ticket printer, inconsistent with technician menu with nice formatting:
+                    /*
                     System.out.print("---\nTicket description:  ");
                     System.out.println(tickets.get(i).getDescription());
                     System.out.print("Ticket severity:  ");
@@ -455,6 +466,7 @@ public class SentinelShield {
                     System.out.print("Date created:  ");
                     System.out.println(tickets.get(i).getDateCreated());
                     System.out.println("---");
+                    */
                 }
             }
         }
