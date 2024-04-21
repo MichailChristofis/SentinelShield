@@ -131,7 +131,7 @@ public class SentinelShield {
                 s -> s.matches("^\\+?\\d{2,4} ?\\d{2,4} ?(\\d{2,4}) ?(\\d{2,4})?$"),
                 "Invalid phone number. Please enter a valid Australian phone number, listing only the digits, without any other characters.\nPhone number: ");
         String password = getUserInput(
-                "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
+                "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:\n",
                 s -> s.matches(PASSWORD_REGEX),
                 "Password must be at least 20 characters, and contain at least 1 uppercase, lowercase, and digit.");
         users.put(email, new User(email, firstName, lastName, phone, password, false));
@@ -197,19 +197,20 @@ public class SentinelShield {
     // and handles their selections
     private void viewTechMenu() {
         // Loop until the function returns
-        // Refresh ticket status every time the menu is returned to
-        serviceDesk.automaticallyRefreshTickets();
         System.out.println("\nWelcome, " + currentUser.getFirstName() + ".");
         while (true) {
-            // We only need to display a technician's own tickets here
+            // Refresh ticket status every time the menu is returned to
+            serviceDesk.automaticallyRefreshTickets();            
             String choice = getUserInput(
                     "Do you want to view your assigned tickets (1), all closed or archived tickets (2), sort tickets by period (3) or logout (4)?\n",
                     s -> s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4"),
                     "Please enter 1, 2, 3 or 4.");
             if (choice.equals("4")) {
+                // Signing out by returning from viewTechMenu()
                 return;
             }
             if (choice.equals("1")) {
+                // We only need to display a technician's own tickets here
                 if (currentUser.getOpenTickets().size() == 0) {
                     System.out.println("\nYou don't have any open tickets currently assigned to you.\n");
                 } else {
@@ -275,7 +276,33 @@ public class SentinelShield {
                         i++;
                     }
                     System.out.println("");
-                    // BUGBUG Handle Archived menu here
+                    // Menu for archived tickets
+
+                    String prompt = "\nSelect a ticket (number) to view and/or edit, or type 'q' to go back.\n";
+                    choice = getUserInput(prompt, s -> {
+                        if (s.toLowerCase().equals("q")) {
+                            return true;
+                        }
+                        try {
+                            Integer.parseInt(s);
+                            return true;
+                        } catch (NumberFormatException _e) {
+                            return false;
+                        }
+                    }, prompt);
+                    if (!choice.toLowerCase().equals("q")) {
+                        int ticketNo = Integer.parseInt(choice);
+                        if (ticketNo > serviceDesk.returnAllClosedAndArchivedTickets().size() || ticketNo <= 0) {
+                            System.out.println("Please choose a valid ticket number.");
+                        }
+                        if (serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1).getIsArchived()) {
+                            techViewArchivedTicketScreen(serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1));
+                            System.out.println("\nThis ticket is archived, and cannot be modified.\n");                                                
+                        } else {
+                            techViewIndividualTicketScreen(serviceDesk.returnAllClosedAndArchivedTickets().get(ticketNo - 1));
+                        }
+                            
+                    }
                 }
             } else if (choice.equals("3")) {
                 String prompt = "Please select beginning date of filter (dd/mm/yyyy): ";
@@ -370,6 +397,14 @@ public class SentinelShield {
         if (choice == 3) {
             return;
         }
+    }
+
+    private void techViewArchivedTicketScreen(Ticket ticket) {
+        System.out.printf("%nAuthor: %s%n",
+                ticket.getCreatedBy().getFirstName() + " " + ticket.getCreatedBy().getLastName());
+        System.out.printf("Severity: %s%n", ticket.getSeverity());
+        System.out.printf("Status: %s%n", ticket.getTicketStatus());
+        System.out.printf("Description: %s%n%n", ticket.getDescription());
     }
 
     private void updateTicketStatusMenu(Ticket ticket) {
@@ -577,7 +612,7 @@ public class SentinelShield {
             users.put(technician.getEmail(), technician);
         }
 
-        // Initialise SentinelShield
+        // Initialize SentinelShield
         SentinelShield system = new SentinelShield(users, new ServiceDesk(techniciansLevel1, techniciansLevel2));
         // Run the program
         system.run();
