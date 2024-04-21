@@ -115,7 +115,7 @@ public class SentinelShield {
         String email = getUserInput(
                 "Please enter your Email: ",
                 s -> s.matches("^([a-zA-Z0-9]+\\.?)*[a-zA-Z0-9]@([a-zA-Z0-9]+\\.?)+[a-zA-Z0-9]$"),
-                "Invalid email address.\nEmail: ");
+                "Invalid email address.\nAddress must conform to RFC 5322.\nPlease write your email address, starting with numbers and letters,\nthen the '@' symbol, then a domain name, including a '.', followed by the TLD.\nEmail: ");
         // TODO: Decide if we need to make sure the email doesn't already exist and
         // implement if so
         String firstName = getUserInput(
@@ -129,7 +129,7 @@ public class SentinelShield {
         String phone = getUserInput(
                 "Please enter your Phone number: ",
                 s -> s.matches("^\\+?\\d{2,4} ?\\d{2,4} ?(\\d{2,4}) ?(\\d{2,4})?$"),
-                "Invalid phone number.\nPhone number: ");
+                "Invalid phone number. Please enter a valid Australian phone number, listing only the digits, without any other characters.\nPhone number: ");
         String password = getUserInput(
                 "Please enter your Password, it must be at least 20 characters, and contain at least one uppercase letter, one lowercase letter, and one number:",
                 s -> s.matches(PASSWORD_REGEX),
