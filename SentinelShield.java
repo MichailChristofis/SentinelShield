@@ -99,7 +99,6 @@ public class SentinelShield {
             return;
         }
         // Print login success message based on whether or not user is technician
-        // TODO Update me when there are separate dashboard functions
         if (currentUser.getIsTechnician()) {
             viewTechMenu();
         } else {
@@ -521,7 +520,6 @@ public class SentinelShield {
     // and communication with the user, for the view tickets screen.
     private void viewTicketsScreen() {
         if (currentUser.getIsTechnician()) {
-            // TODO: Display all technicians tickets and allow them to select one to view
             // This is being handled elsewhere, viewTicketsScreen() is called exclusivly by
             // staff
             // We are a staff member:
